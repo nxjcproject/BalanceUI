@@ -1,0 +1,4 @@
+C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\bin\Release\BalanceUI.Infrastruture.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\bin\Release\BalanceUI.Infrastruture.pdb
+C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.pdb

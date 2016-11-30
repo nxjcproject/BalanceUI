@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceUI.web", "BalanceUI.web\BalanceUI.web.csproj", "{F0222D02-73EF-48E3-B4AF-F1AF8ABB1D2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceUI.Service", "BalanceUI.Service\BalanceUI.Service.csproj", "{D94B8691-7669-437F-9924-0AE46958BD08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceUI.Infrastruture", "BalanceUI.Infrastruture\BalanceUI.Infrastruture.csproj", "{DCC86547-EBD2-43BB-86C5-D15FC27004EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0222D02-73EF-48E3-B4AF-F1AF8ABB1D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0222D02-73EF-48E3-B4AF-F1AF8ABB1D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0222D02-73EF-48E3-B4AF-F1AF8ABB1D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0222D02-73EF-48E3-B4AF-F1AF8ABB1D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D94B8691-7669-437F-9924-0AE46958BD08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D94B8691-7669-437F-9924-0AE46958BD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D94B8691-7669-437F-9924-0AE46958BD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D94B8691-7669-437F-9924-0AE46958BD08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC86547-EBD2-43BB-86C5-D15FC27004EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC86547-EBD2-43BB-86C5-D15FC27004EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC86547-EBD2-43BB-86C5-D15FC27004EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC86547-EBD2-43BB-86C5-D15FC27004EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

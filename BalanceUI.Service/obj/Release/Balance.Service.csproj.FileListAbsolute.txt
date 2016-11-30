@@ -1,0 +1,9 @@
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\Balance.Service.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\Balance.Service.pdb
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\Balance.Infrastruture.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\SqlServerDataAdapter.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\AutoMapper.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\bin\Release\Balance.Infrastruture.pdb
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\obj\Release\Balance.Service.csprojResolveAssemblyReference.cache
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\obj\Release\Balance.Service.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Service\obj\Release\Balance.Service.pdb

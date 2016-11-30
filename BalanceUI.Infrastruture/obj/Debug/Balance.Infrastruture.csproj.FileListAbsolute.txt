@@ -1,0 +1,13 @@
+E:\NXJCProject\pingheng\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.dll
+E:\NXJCProject\pingheng\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.pdb
+E:\NXJCProject\pingheng\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.dll
+E:\NXJCProject\pingheng\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.pdb
+C:\工作\编程\三层框架V3.1\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.dll
+C:\工作\编程\三层框架V3.1\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.pdb
+C:\工作\编程\三层框架V3.1\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.dll
+C:\工作\编程\三层框架V3.1\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.pdb
+C:\工作\编程\三层框架V3.1\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.csprojResolveAssemblyReference.cache
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Infrastruture\bin\Debug\Balance.Infrastruture.pdb
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.dll
+C:\工作\编程\恒拓软件\三层框架V3.1\Balance\Balance.Infrastruture\obj\Debug\Balance.Infrastruture.pdb
