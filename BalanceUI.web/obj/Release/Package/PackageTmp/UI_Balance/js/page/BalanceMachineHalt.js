@@ -94,7 +94,7 @@ function InitializeMasterMachineHaltGrid(myData, myObjId) {
             field: 'MachineHaltLogId',
             hidden: true
         }, {
-            width: '90',
+            width: '70',
             title: '组织机构',
             field: 'Name'
         }, {
@@ -130,11 +130,11 @@ function InitializeMasterMachineHaltGrid(myData, myObjId) {
             field: 'StartTime',
             hidden: true
         }, {
-            width: '120',
+            width: '130',
             title: '停机时间',
             field: 'HaltTime'
         }, {
-            width: '120',
+            width: '130',
             title: '重新开机时间',
             field: 'RecoverTime'
         }, {
@@ -204,6 +204,10 @@ function QueryMachineHaltInfo() {
         alert("请选择设备!");
     }
     else {
+        var win = $.messager.progress({
+            title: '请稍后',
+            msg: '数据载入中...'
+        });
         $.ajax({
             type: "POST",
             url: "BalanceMachineHalt.aspx/GetMachineHaltLog",
@@ -211,10 +215,14 @@ function QueryMachineHaltInfo() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
+                $.messager.progress('close');
                 var m_MsgData = jQuery.parseJSON(msg.d);
                 if (m_MsgData != null && m_MsgData != undefined) {
                     $('#dataGrid_MasterMachineHaltInfo').datagrid("loadData", m_MsgData);
                 }
+            },
+            beforeSend: function (XMLHttpRequest) {
+                win;
             }
         });
     }

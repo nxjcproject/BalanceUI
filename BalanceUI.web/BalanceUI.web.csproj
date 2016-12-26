@@ -1635,6 +1635,7 @@
     <Content Include="lib\pllib\syntaxhighlighter\MIT-LICENSE" />
     <None Include="Properties\PublishProfiles\Balance.pubxml" />
     <None Include="Properties\PublishProfiles\BalanceUI.pubxml" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

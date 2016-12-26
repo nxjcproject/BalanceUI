@@ -43,3 +43,14 @@ I:\马亮需要上传到git\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Model.
 I:\马亮需要上传到git\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.csprojResolveAssemblyReference.cache
 I:\马亮需要上传到git\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.dll
 I:\马亮需要上传到git\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.pdb
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\BalanceUI.Service.dll
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\BalanceUI.Service.pdb
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\BalanceUI.Infrastruture.dll
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\EnergyConsumption.dll
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\AutoMapper.dll
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\BalanceUI.Infrastruture.pdb
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\Balance.Infrastructure.pdb
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\bin\Debug\Balance.Model.pdb
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\obj\Debug\BalanceUI.Service.csprojResolveAssemblyReference.cache
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\obj\Debug\BalanceUI.Service.dll
+H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Service\obj\Debug\BalanceUI.Service.pdb
