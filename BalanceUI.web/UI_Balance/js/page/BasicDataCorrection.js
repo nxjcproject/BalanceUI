@@ -12,6 +12,7 @@ $(function () {
     LoadDataCorrectionDialog();
     LoadTagsSelectDialog();
     LoadSelectedTrendTags();
+    initPageAuthority();
 });
 function LoadDataCorrectionDialog() {
     $('#dlg_CorrectionData').dialog({
@@ -62,6 +63,32 @@ function onOrganisationTreeClick(node) {
     OrganizationId = node.OrganizationId;
     OrganizationType = node.OrganizationType;
     ClearTags('dataGrid_CorrectionTags');
+}
+//初始化页面的增删改查权限
+function initPageAuthority() {
+    $.ajax({
+        type: "POST",
+        url: "BasicDataCorrection.aspx/AuthorityControl",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,//同步执行
+        success: function (msg) {
+            PageOpPermission = msg.d;
+            ////增加
+            //if (PageOpPermission[1] == '0') {
+            //    $("#btnAdd").linkbutton('disable');
+            //}
+            //修改
+            if (PageOpPermission[2] == '0') {
+                $("#adjust").linkbutton('disable');
+            }
+            //删除
+            //if (PageOpPermission[3] == '0') {
+            //    $("#id_deleteAll").linkbutton('disable');
+            //}
+        }
+    });
 }
 function InitializeDateTimePickers() {
     var m_DateTime = new Date();

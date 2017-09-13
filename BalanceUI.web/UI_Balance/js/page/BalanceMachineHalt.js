@@ -7,6 +7,7 @@ $(function () {
     InitializeMasterMachineHaltGrid({ "rows": [], "total": 0 }, "MasterMachineHaltInfo");
     loadMachineHaltReasons();
     loadMasterMachineEditDialog();
+    initPageAuthority();
 });
 
 // 目录树选择事件
@@ -30,6 +31,32 @@ function InitializeDateTime() {
       
     $('#Datebox_StartTimeF').datebox('setValue', m_LastMonthDateString);
     $('#Datebox_EndTimeF').datebox('setValue', m_DateString);
+}
+//初始化页面的增删改查权限
+function initPageAuthority() {
+    $.ajax({
+        type: "POST",
+        url: "BalanceMachineHalt.aspx/AuthorityControl",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,//同步执行
+        success: function (msg) {
+            PageOpPermission = msg.d;
+            //增加
+            if (PageOpPermission[1] == '0') {
+                $("#btnAdd").linkbutton('disable');
+            }
+            //修改
+            //if (authArray[2] == '0') {
+            //    $("#edit").linkbutton('disable');
+            //}
+            //删除
+            //if (PageOpPermission[3] == '0') {
+            //    $("#id_deleteAll").linkbutton('disable');
+            //}
+        }
+    });
 }
 // 获取所有停机原因
 function loadMachineHaltReasons() {

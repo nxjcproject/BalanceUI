@@ -109,7 +109,7 @@
                                         <input id="MinValidValueF" class="easyui-numberspinner" style="width: 80px;" data-options="min:0.0,max:1000.0,value:1.0,increment:0.1,precision:1" />
                                     </td>
                                     <td style="width: 90px; text-align: right;">
-                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', width:80" onclick="DirectCorrection();">直接调整</a>
+                                        <a href="#" id="adjust" class="easyui-linkbutton" data-options="iconCls:'icon-edit', width:80" onclick="DirectCorrection();">直接调整</a>
                                     </td>
                                 </tr>
 
@@ -158,25 +158,25 @@
                     <div data-options="region:'west',border:false,collapsible:false" style="width: 245px; padding: 2px;">
                         <table>
                             <tr>
-                                <td style="width: 85px; height: 30px;">异常数据时间</td>
+                                <td style="width: 90px; height: 30px;">异常数据时间</td>
                                 <td style="width: 150px;">
                                     <input id="Text_AbnormalDataTime" class="easyui-textbox" data-options="editable:false" style="width: 145px" />
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width: 85px; height: 30px;">调整开始时间</td>
+                                <td style="width: 90px; height: 30px;">调整开始时间</td>
                                 <td style="width: 150px;">
                                     <input id="datetimebox_CorrectionStartTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width: 85px; height: 30px;">调整结束时间</td>
+                                <td style="width: 90px; height: 30px;">调整结束时间</td>
                                 <td style="width: 150px;">
                                     <input id="datetimebox_CorrectionEndTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width: 85px; height: 30px; text-align: left;">
+                                <td style="width: 90px; height: 30px; text-align: left;">
                                     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" onclick="ClearTags('dataGrid_CorrectionTags');">清空</a>
 
                                 </td>
@@ -185,7 +185,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width: 85px; height: 30px;"></td>
+                                <td style="width: 90px; height: 30px;"></td>
                                 <td style="width: 150px;"></td>
                             </tr>
                             <tr>

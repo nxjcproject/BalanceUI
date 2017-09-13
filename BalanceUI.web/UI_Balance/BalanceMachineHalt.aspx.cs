@@ -28,6 +28,11 @@ namespace BalanceUI.web.UI_Balance
             }
         }
         [WebMethod]
+        public static char[] AuthorityControl()
+        {
+            return mPageOpPermission.ToArray();
+        }
+        [WebMethod]
         public static string GetMachineHaltLog(string myOrganizationId, string myStartHaltTime, string myEndHaltTime, string myEquipmentId)
         {
             DataTable m_ResultTable = BalanceMachineHaltService.GetMachineHaltLog(myOrganizationId, myStartHaltTime, myEndHaltTime, myEquipmentId);
