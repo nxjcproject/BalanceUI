@@ -12,7 +12,10 @@ $(function () {
     LoadTagsSelectDialog();
     LoadAlarmInfoDialog();
     LoadSelectedTrendTags();
+<<<<<<< HEAD
     InitializeAlarmTypeData();
+=======
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     initPageAuthority();
 });
 function LoadDataCorrectionDialog() {
@@ -95,7 +98,11 @@ function initPageAuthority() {
             //    $("#btnAdd").linkbutton('disable');
             //}
             //修改
+<<<<<<< HEAD
             if (PageOpPermission[2] == '0') {
+=======
+            if (authArray[2] == '0') {
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 $("#adjust").linkbutton('disable');
             }
             //删除

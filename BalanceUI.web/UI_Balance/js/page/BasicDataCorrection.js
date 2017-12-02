@@ -12,7 +12,10 @@ $(function () {
     LoadTagsSelectDialog();
     LoadAlarmInfoDialog();
     LoadSelectedTrendTags();
+<<<<<<< HEAD
     InitializeAlarmTypeData();
+=======
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     initPageAuthority();
 });
 function LoadDataCorrectionDialog() {

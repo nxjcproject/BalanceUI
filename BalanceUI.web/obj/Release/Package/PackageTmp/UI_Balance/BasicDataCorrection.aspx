@@ -128,6 +128,7 @@
                                     <td style="height: 40px; text-align: left; padding-left: 5px;">
                                         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="CorrectionDataByTags();">修正</a>
                                     </td>
+<<<<<<< HEAD
                                     <td style="text-align: right; padding-right: 5px;">
                                         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" onclick="ClearTags('dataGrid_CorrectionTags');">清空标签</a>
                                     </td>
@@ -144,6 +145,10 @@
                                     </td>
                                     <td style="text-align: right; padding-right: 5px;">
                                         <a href="#" class="easyui-linkbutton" data-options="iconCls:'ext-icon-calculator'" onclick="CaculateAvgValue();">计算均值</a>
+=======
+                                    <td style="width: 90px; text-align: right;">
+                                        <a href="#" id="adjust" class="easyui-linkbutton" data-options="iconCls:'icon-edit', width:80" onclick="DirectCorrection();">直接调整</a>
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                                     </td>
                                 </tr>
                             </table>
@@ -154,6 +159,59 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+=======
+            <div data-options="region:'center',border:true,collapsible:false">
+                <div class="easyui-layout" data-options="fit:true,border:false">
+                    <div data-options="region:'west',border:false,collapsible:false" style="width: 245px; padding: 2px;">
+                        <table>
+                            <tr>
+                                <td style="width: 90px; height: 30px;">异常数据时间</td>
+                                <td style="width: 150px;">
+                                    <input id="Text_AbnormalDataTime" class="easyui-textbox" data-options="editable:false" style="width: 145px" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 90px; height: 30px;">调整开始时间</td>
+                                <td style="width: 150px;">
+                                    <input id="datetimebox_CorrectionStartTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 90px; height: 30px;">调整结束时间</td>
+                                <td style="width: 150px;">
+                                    <input id="datetimebox_CorrectionEndTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 90px; height: 30px; text-align: left;">
+                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" onclick="ClearTags('dataGrid_CorrectionTags');">清空</a>
+
+                                </td>
+                                <td style="width: 150px; text-align: right;">
+                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="SelectTags('dataGrid_CorrectionTags');">添加</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 90px; height: 30px;"></td>
+                                <td style="width: 150px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 85px; height: 30px; text-align: left;">
+                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="CorrectionDataByTags();">修正</a>
+                                </td>
+                                <td style="width: 150px; text-align: right;">
+                                    <a href="#" class="easyui-linkbutton" onclick="ReCaculateBalanceData();">重新生成汇总数据</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div data-options="region:'center',border:false,collapsible:false" style="padding: 2px;">
+                        <table id="dataGrid_CorrectionTags"></table>
+                    </div>
+                </div>
+            </div>
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         </div>
     </div>
 

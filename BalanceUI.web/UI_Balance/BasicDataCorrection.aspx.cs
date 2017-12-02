@@ -29,6 +29,14 @@ namespace BalanceUI.web.UI_Balance
         }
         [WebMethod]
         public static char[] AuthorityControl()
+<<<<<<< HEAD
+=======
+        {
+            return mPageOpPermission.ToArray();
+        }
+        [WebMethod]
+        public static string GetAbnormalData(string myOrganizationId, string myDeviationMagnification, string myCorrectionObject, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         {
             return mPageOpPermission.ToArray();
         }

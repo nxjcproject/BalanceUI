@@ -93,6 +93,7 @@ E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\bin\Balance.Model.pdb
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.csprojResolveAssemblyReference.cache
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.dll
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.pdb
+<<<<<<< HEAD
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.web.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.web.pdb
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.Service.dll
@@ -111,3 +112,5 @@ E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\Balance.Model.pdb
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.csprojResolveAssemblyReference.cache
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.pdb
+=======
+>>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
