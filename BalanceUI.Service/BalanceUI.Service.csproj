@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BalanceMachineHaltService.cs" />
     <Compile Include="BalanceService\BalanceWeightBalanceLogService.cs" />
+    <Compile Include="BalanceService\MaterialBalance.cs" />
     <Compile Include="BalanceService\StocksService.cs" />
     <Compile Include="BasicDataCorrectionService.cs" />
     <Compile Include="FormulaParser.cs" />

@@ -1592,9 +1592,12 @@
     <Content Include="UI_Balance\BalanceMachineHalt.aspx" />
     <Content Include="UI_Balance\BalanceWeightBalanceLog.aspx" />
     <Content Include="UI_Balance\BasicDataCorrection.aspx" />
+    <Content Include="UI_Balance\js\common\MergeCell.js" />
     <Content Include="UI_Balance\js\page\BalanceMachineHalt.js" />
     <Content Include="UI_Balance\js\page\BalanceWeightBalanceLog.js" />
     <Content Include="UI_Balance\js\page\BasicDataCorrection.js" />
+    <Content Include="UI_Balance\js\page\MaterialBalance.js" />
+    <Content Include="UI_Balance\MaterialBalance.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1629,12 +1632,17 @@
     <Compile Include="UI_Balance\BasicDataCorrection.aspx.designer.cs">
       <DependentUpon>BasicDataCorrection.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UI_Balance\MaterialBalance.aspx.cs">
+      <DependentUpon>MaterialBalance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI_Balance\MaterialBalance.aspx.designer.cs">
+      <DependentUpon>MaterialBalance.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\pllib\syntaxhighlighter\LGPL-LICENSE" />
     <Content Include="lib\pllib\syntaxhighlighter\MIT-LICENSE" />
-    <None Include="Properties\PublishProfiles\Balance.pubxml" />
-    <None Include="Properties\PublishProfiles\BalanceUI.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1648,7 +1656,6 @@
     <Folder Include="Images\common\" />
     <Folder Include="Images\Page\" />
     <Folder Include="js\page\" />
-    <Folder Include="UI_Balance\js\common\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BalanceUI.Service\BalanceUI.Service.csproj">

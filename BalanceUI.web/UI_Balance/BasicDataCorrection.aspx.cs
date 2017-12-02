@@ -18,9 +18,9 @@ namespace BalanceUI.web.UI_Balance
             {
 #if DEBUG
                 // 调试用,自定义的数据授权
-                List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf", "zc_nxjc_qtx_efc","zc_nxjc_znc"};
+                List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf", "zc_nxjc_qtx_efc", "zc_nxjc_znc", "zc_nxjc_ychc" };
                 AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
-                mPageOpPermission = "1111";
+                mPageOpPermission = "1101";
 #endif
                 this.OrganisationTree.Organizations = GetDataValidIdGroup("ProductionOrganization");                 //向web用户控件传递数据授权参数
                 this.OrganisationTree.PageName = "BasicDataCorrection.aspx";
@@ -28,13 +28,15 @@ namespace BalanceUI.web.UI_Balance
             }
         }
         [WebMethod]
-        public static string GetAbnormalData(string myOrganizationId, string myDeviationMagnification, string myCorrectionObject, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
+        public static char[] AuthorityControl()
         {
-            DataTable m_ResultTable = BalanceUI.Service.BasicDataCorrectionService.GetAbnormalData(myOrganizationId, myDeviationMagnification, myCorrectionObject, myMinValidValue, myStartTime, myEndTime, myStartTimeReference, myEndTimeReference);
-            string m_ColumnString = BalanceUI.Service.BasicDataCorrectionService.GetColumnJsonString(m_ResultTable);
-            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_ResultTable);
-            m_ResultString = m_ResultString.Remove(m_ResultString.Length - 1, 1);
-            m_ResultString = m_ResultString + "," + m_ColumnString + "}";
+            return mPageOpPermission.ToArray();
+        }
+        [WebMethod]
+        public static string GetAlarmType()
+        {
+            DataTable m_AlarmTypeTable = BalanceUI.Service.BasicDataCorrectionService.GetAlarmType();
+            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_AlarmTypeTable);
             return m_ResultString;
         }
         [WebMethod]
@@ -57,13 +59,13 @@ namespace BalanceUI.web.UI_Balance
         public static string GetTrend(string myOrganizationId, string myStartTime, string myEndTime, string myAmmeterFieldNames, string myDCSFieldNames)
         {
             DataTable m_ResultTable = BalanceUI.Service.BasicDataCorrectionService.GetTrend(myOrganizationId, myStartTime, myEndTime, myAmmeterFieldNames, myDCSFieldNames);
-            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_ResultTable); 
+            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_ResultTable);
             return m_ResultString;
         }
         [WebMethod]
-        public static string CorrectionDataByTags(string myOrganizationId, string myStartTime, string myEndTime, string myAbnormalDataTime, string myTagsInfo)
+        public static string CorrectionDataByTags(string myOrganizationId, string myStartTime, string myEndTime, string myTagsInfo)
         {
-            string m_ResultString = BalanceUI.Service.BasicDataCorrectionService.CorrectionDataByTags(myOrganizationId, myStartTime, myEndTime, myAbnormalDataTime, myTagsInfo);
+            string m_ResultString = BalanceUI.Service.BasicDataCorrectionService.CorrectionDataByTags(myOrganizationId, myStartTime, myEndTime, myTagsInfo);
             return m_ResultString;
         }
         [WebMethod]
@@ -79,6 +81,26 @@ namespace BalanceUI.web.UI_Balance
                 return "0";
             }
 
+        }
+        [WebMethod]
+        public static string GetAlarmDetail(string myOrganizationId, string myAlarmType, string myStartTime, string myEndTime)
+        {
+            DataTable m_AlarmDetailDataTable = BalanceUI.Service.BasicDataCorrectionService.GetAlarmDetail(myOrganizationId, myAlarmType, myStartTime, myEndTime);
+            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_AlarmDetailDataTable);
+            return m_ResultString;
+        }
+        [WebMethod]
+        public static string CaculateAvgValue(string myOrganizationId, string myStartTime, string myEndTime, string myDataGridData)
+        {
+            DataTable m_DataGridDataStruct = BalanceUI.Service.BasicDataCorrectionService.CreateCaculateAvgTableStructure("ModifyTagInfoTable");
+            string[] m_DataGridDataGroup = EasyUIJsonParser.Utility.JsonPickArray(myDataGridData, "rows");
+            DataTable m_DataGridData = EasyUIJsonParser.DataGridJsonParser.JsonToDataTable(m_DataGridDataGroup, m_DataGridDataStruct);
+
+            string m_DataBaseName = BalanceUI.Service.BasicDataCorrectionService.GetFactoryDataBase(myOrganizationId);
+            BalanceUI.Service.BasicDataCorrectionService.CaculateAvgValueByTags(myStartTime, myEndTime, m_DataBaseName, ref m_DataGridData);
+
+            string m_ResultString = EasyUIJsonParser.DataGridJsonParser.DataTableToJson(m_DataGridData);
+            return m_ResultString;
         }
     }
 }

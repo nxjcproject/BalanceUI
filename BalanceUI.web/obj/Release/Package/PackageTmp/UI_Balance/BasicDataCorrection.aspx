@@ -42,7 +42,7 @@
     <script type="text/javascript" src="/lib/pllib/plugins/jqplot.dateAxisRenderer.min.js"></script>
     <script type="text/javascript" src="/lib/pllib/plugins/jqplot.highlighter.min.js"></script>
 
-   
+
     <%--<script type="text/javascript" src="/lib/pllib/themes/jquery.jqplot.js"></script>
     <script type="text/javascript" src="/lib/pllib/themes/jjquery.jqplot.min.js"></script>--%>
     <!--[if lt IE 8 ]><script type="text/javascript" src="/js/common/json2.min.js"></script><![endif]-->
@@ -65,146 +65,98 @@
         <!-- 左侧目录树结束 -->
         <!-- 中央区域开始 -->
         <div data-options="region:'center',border:false,collapsible:false" style="padding-left: 3px;">
-            <div id="toolbar_BasicDataCorrection">
-                <table>
-                    <tr>
-                        <td>
+            <div class="easyui-layout" data-options="fit:true,border:false">
+                <div data-options="region:'north',border:false,collapsible:false" style="height: 210px;" aria-checked="true">
+                    <div id="ChartContentDiv" class="easyui-layout" data-options="fit:true,border:false">
+                        <div data-options="region:'north',border:true,collapsible:false" style="height: 34px; background-color: #eeeeee; padding-top: 2px;">
                             <table>
                                 <tr>
-                                    <td style="width: 60px; height: 30px;">起止时间</td>
-                                    <td style="text-align: left; width: 320px;">
-                                        <input id="StartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                        <span id="InnerlLine">--</span>
-                                        <input id="EndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                                    <td style="width: 60px; text-align: right;">当前分厂</td>
+                                    <td style="width: 80px;">
+                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 75px" />
                                     </td>
-                                    <td>当前分厂</td>
-                                    <td style="width: 90px;">
-                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 80px" />
+                                    <td style="width: 60px; text-align: right;">开始时间</td>
+                                    <td style="width: 150px;">
+                                        <input id="datetimebox_TrendStartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                     </td>
-                                    <td>最大偏差倍数</td>
+                                    <td style="width: 60px; text-align: right;">结束时间</td>
+                                    <td style="width: 150px;">
+                                        <input id="datetimebox_TrendEndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                                    </td>
                                     <td>
-                                        <input id="DeviationMagnificationF" class="easyui-numberspinner" style="width: 80px;" data-options="min:1,max:1000,value:10,increment:1" />
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="EditTrendTags();">趋势标签</a>
                                     </td>
-                                    <td style="width: 90px; text-align: right;">
-                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', width:80" onclick="QueryAbnormalData()">查询</a>
+                                    <td>
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'ext-icon-chart_curve'" onclick="DisplayTrend();">趋势</a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div class="datagrid-btn-separator"></div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'ext-icon-feed'" onclick="AlarmInfoQuery();">报警信息</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div data-options="region:'center',border:true,collapsible:false" style="padding-top: 3px;">
+                            <div style="width: 630px; height: 8px; vertical-align: bottom;">
+                            </div>
+                            <div id="LineTrend_Content" style="width: 620px; height: 125px;">
+                            </div>
+                            <div id="LineTrend_Legend" style="width: 630px; height: 10px; vertical-align: bottom; margin-top: 5px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-options="region:'center',border:false,collapsible:false" style="padding-top: 3px;">
+                    <div class="easyui-layout" data-options="fit:true,border:false">
+                        <div data-options="region:'west',border:true,collapsible:false" style="width: 250px;">
+                            <table>
+                                <tr>
+                                    <td style="width: 100px; height: 30px; text-align: center;">调整开始时间</td>
+                                    <td style="width: 150px;">
+                                        <input id="datetimebox_CorrectionStartTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 60px; height: 30px;">参考时间</td>
-                                    <td style="text-align: left; width: 320px;">
-                                        <input id="StartTimeReferenceF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                        <span id="InnerlLine1">--</span>
-                                        <input id="EndTimeReferenceF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                    </td>
-                                    <td>调整对象</td>
+                                    <td style="height: 30px; text-align: center;">调整结束时间</td>
                                     <td>
-                                        <select id="CorrectionObjectF" class="easyui-combobox" data-options="panelHeight:true,valueField:'id',textField:'text',editable:false" name="dept" style="width: 80px;">
-                                            <option value="All" selected="selected">全部</option>
-                                            <option value="MaterialWeight">产量/消耗量</option>
-                                            <option value="ElectricityQuantity">电量</option>
-                                        </select>
-                                    </td>
-                                    <td>最小有效值</td>
-                                    <td>
-                                        <input id="MinValidValueF" class="easyui-numberspinner" style="width: 80px;" data-options="min:0.0,max:1000.0,value:1.0,increment:0.1,precision:1" />
-                                    </td>
-                                    <td style="width: 90px; text-align: right;">
-                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', width:80" onclick="DirectCorrection();">直接调整</a>
+                                        <input id="datetimebox_CorrectionEndTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                     </td>
                                 </tr>
-
+                                <tr>
+                                    <td style="height: 40px; text-align: left; padding-left: 5px;">
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="CorrectionDataByTags();">修正</a>
+                                    </td>
+                                    <td style="text-align: right; padding-right: 5px;">
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" onclick="ClearTags('dataGrid_CorrectionTags');">清空标签</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 40px; text-align: left; padding-left: 5px;"></td>
+                                    <td style="text-align: right; padding-right: 5px;">
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="SelectTags('dataGrid_CorrectionTags');">添加标签</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 40px; text-align: left; padding-left: 5px;">
+                                        <a href="#" class="easyui-linkbutton" onclick="ReCaculateBalanceData();">生成汇总数据</a>
+                                    </td>
+                                    <td style="text-align: right; padding-right: 5px;">
+                                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'ext-icon-calculator'" onclick="CaculateAvgValue();">计算均值</a>
+                                    </td>
+                                </tr>
                             </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <table id="dataGrid_BasicDataCorrection"></table>
-        </div>
-    </div>
-    <div id="dlg_CorrectionData" class="easyui-dialog">
-        <div class="easyui-layout" data-options="fit:true,border:false">
-            <div data-options="region:'north',border:false,collapsible:false" style="height: 210px;">
-                <div class="easyui-layout" data-options="fit:true,border:false">
-                    <div data-options="region:'north',border:false,collapsible:false" style="height: 34px; background-color: #eeeeee;">
-                        <table>
-                            <tr>
-                                <td style="width: 60px;">起止时间</td>
-                                <td style="text-align: left; width: 320px;">
-                                    <input id="datetimebox_TrendStartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                    <span id="Span1">--</span>
-                                    <input id="datetimebox_TrendEndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                </td>
-                                <td>
-                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="EditTrendTags();">趋势标签</a>
-                                </td>
-                                <td>
-                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'ext-icon-chart_curve'" onclick="DisplayTrend();">趋势</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div data-options="region:'center',border:false,collapsible:false" style ="padding-top:3px;">
-                        <div id="LineTrend_Legend" style ="width:730px; height:10px; vertical-align:bottom;">
-
                         </div>
-                        <div id="LineTrend_Content" style ="width:720px; height:145px; ">
-
+                        <div data-options="region:'center',border:false,collapsible:false" style="padding-left: 3px;">
+                            <table id="dataGrid_CorrectionTags"></table>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div data-options="region:'center',border:true,collapsible:false">
-                <div class="easyui-layout" data-options="fit:true,border:false">
-                    <div data-options="region:'west',border:false,collapsible:false" style="width: 245px; padding: 2px;">
-                        <table>
-                            <tr>
-                                <td style="width: 85px; height: 30px;">异常数据时间</td>
-                                <td style="width: 150px;">
-                                    <input id="Text_AbnormalDataTime" class="easyui-textbox" data-options="editable:false" style="width: 145px" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 85px; height: 30px;">调整开始时间</td>
-                                <td style="width: 150px;">
-                                    <input id="datetimebox_CorrectionStartTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 85px; height: 30px;">调整结束时间</td>
-                                <td style="width: 150px;">
-                                    <input id="datetimebox_CorrectionEndTime" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 85px; height: 30px; text-align: left;">
-                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" onclick="ClearTags('dataGrid_CorrectionTags');">清空</a>
-
-                                </td>
-                                <td style="width: 150px; text-align: right;">
-                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="SelectTags('dataGrid_CorrectionTags');">添加</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 85px; height: 30px;"></td>
-                                <td style="width: 150px;"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 85px; height: 30px; text-align: left;">
-                                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="CorrectionDataByTags();">修正</a>
-                                </td>
-                                <td style="width: 150px; text-align: right;">
-                                    <a href="#" class="easyui-linkbutton" onclick="ReCaculateBalanceData();">重新生成汇总数据</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div data-options="region:'center',border:false,collapsible:false" style="padding: 2px;">
-                        <table id="dataGrid_CorrectionTags"></table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div id="dlg_SelectDataTags" class="easyui-dialog">
         <div id="toolbar_SelectTagsList">
             <table>
@@ -213,8 +165,7 @@
                     </td>
                     <td style="width: 100px;">
                         <select id="Combobox_DataTagsFilter" class="easyui-combobox" name="MainMachine" data-options="panelHeight:'auto', valueField: 'Id',textField: 'Text',editable:false,onSelect:function(record){ChangeTagsList(record);}" style="width: 90px;">
-                            <option value="Abnormal" selected="selected">异常标签</option>
-                            <option value="Ammeter">电表标签</option>
+                            <option value="Ammeter" selected="selected">电表标签</option>
                             <option value="DCS">DCS标签</option>
                         </select>
                     </td>
@@ -241,7 +192,42 @@
         </div>
         <table id="dataGrid_TrendTagsList"></table>
     </div>
-    <form id="form1" runat="server">
+    <div id="dlg_AlarmInfo" class="easyui-dialog">
+        <div id="toolbar_AlarmInfo">
+            <table>
+                <tr>
+                    <td style="width: 55px; text-align: right;">开始时间</td>
+                    <td style="width: 150px;">
+                        <input id="datetimebox_AlarmStartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                    </td>
+                    <td style="width: 55px; text-align: right;">结束时间</td>
+                    <td style="width: 150px;">
+                        <input id="datetimebox_AlarmEndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
+                    </td>
+                    <td style="width: 55px; text-align: right;">报警类别</td>
+                    <td style="width: 90px;">
+                        <input id="combobox_AlarmTypeF" class="easyui-combobox" data-options="valueField:'id',textField:'text',panelHeight:'auto',required: false,editable: false" style="width: 85px" />
+                    </td>
+                    <td style="height: 30px; text-align:left;">
+                        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="AlarmDetailQuery();">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="dataGrid_AlarmInfo"  class="easyui-datagrid"
+            data-options="rownumbers:true,singleSelect:true,border:false,fit:true,toolbar:'#toolbar_AlarmInfo',onDblClickRow:function(rowIndex, rowData){SetTrendTime(rowData);}">
+               <thead>
+                    <tr>
+                        <!--<th data-options="field:'ID',width:200,hidden: true">设备ID</th>-->
+                        <th data-options="field:'AlarmId',width:110,hidden: true">报警ID</th>
+                        <th data-options="field:'AlarmText',width:300">报警名称</th>
+                        <th data-options="field:'StartTime',width:150">开始时间</th>
+                        <th data-options="field:'EndTime',width:150">结束时间</th>
+                    </tr>
+               </thead>
+        </table>
+    </div>
+    <form id="MainForm" runat="server">
         <div>
         </div>
     </form>

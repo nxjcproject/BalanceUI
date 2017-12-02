@@ -5,13 +5,15 @@ var SelectedTargetId = "";
 var PlotChartObj = undefined;
 $(function () {
     InitializeDateTimePickers();
-    InitializeBasicDataCorrectionGrid("BasicDataCorrection", { "rows": [], "total": 0 });
     InitializeCorrectionGrid("CorrectionTags", { "rows": [], "total": 0 });
     InitializeDataTagsGrid("SelectTagsList", { "rows": [], "total": 0 });
     InitializeTrendTagsGrid("TrendTagsList", { "rows": [], "total": 0 });
     LoadDataCorrectionDialog();
     LoadTagsSelectDialog();
+    LoadAlarmInfoDialog();
     LoadSelectedTrendTags();
+    InitializeAlarmTypeData();
+    initPageAuthority();
 });
 function LoadDataCorrectionDialog() {
     $('#dlg_CorrectionData').dialog({
@@ -55,6 +57,20 @@ function LoadSelectedTrendTags() {
         resizable: false
     });
 }
+function LoadAlarmInfoDialog() {
+    $('#dlg_AlarmInfo').dialog({
+        title: '报警记录',
+        left: 400,
+        top: 10,
+        width: 660,
+        height: 450,
+        closed: true,
+        cache: false,
+        modal: true,
+        iconCls: 'icon-search',
+        resizable: false
+    });
+}
 // 目录树选择事件
 function onOrganisationTreeClick(node) {
     // 更新当前分厂名
@@ -63,136 +79,50 @@ function onOrganisationTreeClick(node) {
     OrganizationType = node.OrganizationType;
     ClearTags('dataGrid_CorrectionTags');
 }
+//初始化页面的增删改查权限
+function initPageAuthority() {
+    $.ajax({
+        type: "POST",
+        url: "BasicDataCorrection.aspx/AuthorityControl",
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,//同步执行
+        success: function (msg) {
+            PageOpPermission = msg.d;
+            ////增加
+            //if (PageOpPermission[1] == '0') {
+            //    $("#btnAdd").linkbutton('disable');
+            //}
+            //修改
+            if (PageOpPermission[2] == '0') {
+                $("#adjust").linkbutton('disable');
+            }
+            //删除
+            //if (PageOpPermission[3] == '0') {
+            //    $("#id_deleteAll").linkbutton('disable');
+            //}
+        }
+    });
+}
 function InitializeDateTimePickers() {
     var m_DateTime = new Date();
     var m_NowStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
     m_DateTime.setDate(m_DateTime.getDate() - 1);
     var m_YestedayStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
-    $('#StartTimeF').datetimebox('setValue', m_YestedayStr);
-    $('#EndTimeF').datetimebox('setValue', m_NowStr);
-
-    //////////参考时间取前一个月的数据的平均值//////////
-    m_DateTime.setMonth(m_DateTime.getMonth() - 1);
-    var m_LastMonthEndStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
-    m_DateTime.setMonth(m_DateTime.getMonth() - 1);
-    var m_LastMonthStartStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
-    $('#StartTimeReferenceF').datetimebox('setValue', m_LastMonthStartStr);
-    $('#EndTimeReferenceF').datetimebox('setValue', m_LastMonthEndStr);
-
+    $('#datetimebox_TrendStartTimeF').datetimebox('setValue', m_YestedayStr);
+    $('#datetimebox_TrendEndTimeF').datetimebox('setValue', m_NowStr);
+    $('#datetimebox_CorrectionStartTime').datetimebox('setValue', m_YestedayStr);
+    $('#datetimebox_CorrectionEndTime').datetimebox('setValue', m_NowStr);
+    $('#datetimebox_AlarmStartTimeF').datetimebox('setValue', m_YestedayStr);
+    $('#datetimebox_AlarmEndTimeF').datetimebox('setValue', m_NowStr);
+}
+function SetChartContentSize(width, height) {
+    $('#LineTrend_Legend').css('width', width - 5);
+    $('#LineTrend_Content').css('width', width - 30);
+    $('#LineTrend_Content').css('height', height - 35);
 }
 
-function QueryAbnormalData() {
-    var m_StartTime = $('#StartTimeF').datetimebox("getValue");
-    var m_EndTime = $('#EndTimeF').datetimebox('getValue');
-    var m_StartTimeReference = $('#StartTimeReferenceF').datetimebox("getValue");
-    var m_EndTimeReference = $('#EndTimeReferenceF').datetimebox('getValue');
-    var m_DeviationMagnification = $('#DeviationMagnificationF').numberspinner("getValue");
-    var m_MinValidValue = $('#MinValidValueF').numberspinner("getValue");
-    var m_CorrectionObject = $('#CorrectionObjectF').combobox("getValue");
-    if (OrganizationType == "" || OrganizationType != "分厂") {
-        alert("请首先选择分厂!");
-    }
-    else {
-        var win = $.messager.progress({
-            title: '请稍后',
-            msg: '数据载入中...'
-        });
-        $.ajax({
-            type: "POST",
-            url: 'BasicDataCorrection.aspx/GetAbnormalData',
-            data: "{myOrganizationId:'" + OrganizationId + "',myDeviationMagnification:'" + m_DeviationMagnification + "',myCorrectionObject:'" + m_CorrectionObject + "',myMinValidValue:'" + m_MinValidValue +
-                "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime + "',myStartTimeReference:'" + m_StartTimeReference + "',myEndTimeReference:'" + m_EndTimeReference + "'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-                var m_MsgData = jQuery.parseJSON(msg.d);
-                if (m_MsgData != null && m_MsgData != undefined) {
-                    var m_BaseColunms = [];
-                    try {
-                        if (m_MsgData["columns"].length > 0) {
-                            for (var i = 0; i < m_MsgData["columns"].length; i++) {
-                                var m_ColumnTemp = [];
-                                m_ColumnTemp["width"] = "120";
-                                m_ColumnTemp["title"] = GetDateTimeString(m_MsgData["columns"][i]);
-                                m_ColumnTemp["field"] = m_MsgData["columns"][i];
-                                m_BaseColunms.push(m_ColumnTemp);
-                            }
-                            var options = $("#dataGrid_BasicDataCorrection").datagrid("options");                   //取出当前datagrid的配置     
-                            options.columns = [m_BaseColunms];                            //添加服务器端返回的columns配置信息
-                            //options.queryParams = getQueryParams("id");                                //添加查询参数  
-                            $("#dataGrid_BasicDataCorrection").datagrid(options);
-                            $("#dataGrid_BasicDataCorrection").datagrid("load");
-                            $('#dataGrid_BasicDataCorrection').datagrid("loadData", m_MsgData);
-                        }
-                        else {
-                            var options = $("#dataGrid_BasicDataCorrection").datagrid("options");                   //取出当前datagrid的配置     
-                            options.columns = [m_BaseColunms];                            //添加服务器端返回的columns配置信息
-                            //options.queryParams = getQueryParams("id");                                //添加查询参数  
-                            $("#dataGrid_BasicDataCorrection").datagrid(options);
-                            $("#dataGrid_BasicDataCorrection").datagrid("load");
-                            $('#dataGrid_BasicDataCorrection').datagrid("loadData", { "rows": [], "total": 0 });
-                        }
-                    }
-                    catch (err) {
-                        $.messager.progress('close');
-                    }
-                }
-                $.messager.progress('close');
-            },
-            error: function () {
-                $.messager.progress('close');
-                $.messager.alert('错误', '数据载入失败！');
-            }
-        });
-    }
-}
-
-function InitializeBasicDataCorrectionGrid(myObjId, myData) {
-    $('#dataGrid_' + myObjId).datagrid({
-        title: '',
-        data: myData,
-        dataType: "json",
-        striped: true,
-        //loadMsg: '',   //设置本身的提示消息为空 则就不会提示了的。这个设置很关键的
-        rownumbers: true,
-        singleSelect: true,
-        idField: 'id',
-        fit: true,
-        frozenColumns: [[{
-            width: '110',
-            title: '数据项ID',
-            field: 'id',
-            hidden: true
-        }, {
-            width: '100',
-            title: '字段名称',
-            field: 'FieldName',
-            hidden: true
-        }, {
-            width: '100',
-            title: '数据项名称',
-            field: 'text'
-        }, {
-            width: '90',
-            title: '地址',
-            field: 'Address'
-        }, {
-            width: '60',
-            title: '修改对象',
-            field: 'Type'
-        }, {
-            width: '60',
-            title: '平均值',
-            field: 'AvgValue'
-        }]],
-        onDblClickCell: function (rowIndex, field, value) {
-            if (field != 'id' && field != 'FieldName' && field != 'text' && field != 'Address' && field != 'Type' && field != 'AvgValue') {
-                GetDataTrend(rowIndex, field, value);
-            }
-        },
-        toolbar: '#toolbar_' + myObjId
-    });
-}
 function InitializeDataTagsGrid(myObjId, myData) {
     $('#dataGrid_' + myObjId).datagrid({
         title: '',
@@ -210,25 +140,17 @@ function InitializeDataTagsGrid(myObjId, myData) {
             field: 'id',
             hidden: true
         }, {
-            width: '110',
+            width: '230',
             title: '标签名称',
             field: 'text'
         }, {
-            width: '70',
+            width: '80',
             title: '字段名称',
             field: 'FieldName'
         }, {
             width: '65',
             title: '对象类型',
             field: 'Type'
-        }, {
-            width: '70',
-            title: '平均值',
-            field: 'AvgValue'
-        }, {
-            width: '70',
-            title: '修正值',
-            field: 'CorrectionValue'
         }]],
         onDblClickRow: function (rowIndex, rowData) {
             AddTagsToTargetDataGrid(rowData);
@@ -253,23 +175,23 @@ function InitializeCorrectionGrid(myObjId, myData) {
             field: 'id',
             hidden: true
         }, {
-            width: '145',
+            width: '160',
             title: '数据项名称',
             field: 'text'
         }, {
-            width: '70',
+            width: '80',
             title: '字段名称',
             field: 'FieldName'
         }, {
-            width: '60',
+            width: '80',
             title: '修改对象',
             field: 'Type'
         }, {
-            width: '80',
+            width: '120',
             title: '平均值',
             field: 'AvgValue'
         }, {
-            width: '80',
+            width: '120',
             title: '修正值',
             field: 'CorrectionValue',
             editor: {
@@ -346,6 +268,51 @@ function InitializeTrendTagsGrid(myObjId, myData) {
         toolbar: '#toolbar_' + myObjId
     });
 }
+////////////////////获得报警列表///////////////////////
+function InitializeAlarmTypeData() {
+    $.ajax({
+        type: "POST",
+        url: 'BasicDataCorrection.aspx/GetAlarmType',
+        data: "",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            var m_MsgData = jQuery.parseJSON(msg.d)['rows'];
+            var m_ResultData = [];
+            m_ResultData.push({ "id": "All", "text": "全部" });
+            if (m_MsgData != undefined && m_MsgData != null && m_MsgData.length > 0) {
+                for (var i = 0; i < m_MsgData.length; i++) {
+                    m_ResultData.push(m_MsgData[i]);
+                }
+            }
+            $('#combobox_AlarmTypeF').combobox('loadData', m_ResultData);
+            $('#combobox_AlarmTypeF').combobox("setValue", m_ResultData[0].id);
+        },
+        error: function () {
+        }
+    });
+}
+function SetTrendTime(myRowData) {
+    var m_StartTime = myRowData["StartTime"].replace(/\//g, "-");
+    var m_EndTime = myRowData["EndTime"].replace(/\//g, "-");
+    if (m_StartTime == "") {
+        alert("无报警开始时间!");
+    }
+    else {
+        if(m_EndTime == "")
+        {
+            $('#datetimebox_TrendStartTimeF').datetimebox('setValue', m_StartTime);
+            var m_DateTime = new Date();
+            var m_NowStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
+            $('#datetimebox_TrendEndTimeF').datetimebox('setValue', m_NowStr);
+        }
+        else
+        {
+            $('#datetimebox_TrendStartTimeF').datetimebox('setValue', m_StartTime);
+            $('#datetimebox_TrendEndTimeF').datetimebox('setValue', m_EndTime);
+        }
+    }
+}
 function AddTagsToTargetDataGrid(myValue) {
     var m_DataRows = $('#' + SelectedTargetId).datagrid("getRows");
     var m_TagAlreadyExist = false;
@@ -402,7 +369,6 @@ function GetDateTimeString(myDateTimeValue) {
 }
 function GetDataTrend(rowIndex, field, value) {
     if (field != "id" && field != "text" && field != "Type" && field != "AvgValue") {
-        $('#Text_AbnormalDataTime').textbox('setValue', GetDateTimeString(field));
         var m_DataRows = $('#dataGrid_BasicDataCorrection').datagrid("getRows");
 
         //SelectedTrendTags = [];           //首先清空列表
@@ -438,89 +404,40 @@ function GetDataTrend(rowIndex, field, value) {
         $('#dlg_CorrectionData').dialog('open');
     }
 }
-function DirectCorrection() {
-    if (OrganizationType == "" || OrganizationType != "分厂") {
-        alert("请首先选择分厂!");
+function SelectTags(mySelectedTargetId) {
+    if (OrganizationId == "") {
+        alert("请选择分厂!");
     }
     else {
-        $('#Text_AbnormalDataTime').textbox('setValue', "");
-
-        var m_DateTime = new Date();
-        var m_NowStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
-        m_DateTime.setDate(m_DateTime.getDate() - 1);
-        var m_YestedayStr = m_DateTime.format("yyyy-MM-dd hh:mm:ss");
-        $('#datetimebox_TrendStartTimeF').datetimebox('setValue', m_YestedayStr);
-        $('#datetimebox_TrendEndTimeF').datetimebox('setValue', m_NowStr);
-        $('#datetimebox_CorrectionStartTime').datetimebox('setValue', m_YestedayStr);
-        $('#datetimebox_CorrectionEndTime').datetimebox('setValue', m_NowStr);
-
-        $('#dlg_CorrectionData').dialog('open');
+        SelectedTargetId = mySelectedTargetId;
+        var m_DataTagsFilter = $('#Combobox_DataTagsFilter').combobox('getValue');
+        if (m_DataTagsFilter == "Ammeter") {
+            GetAmmeterTagsList();
+        }
+        else if (m_DataTagsFilter == "DCS") {
+            GetDCSTagsList();
+        }
+        $('#dlg_SelectDataTags').dialog('open');
     }
-}
-function SelectTags(mySelectedTargetId) {
-    SelectedTargetId = mySelectedTargetId;
-    var m_DataTagsFilter = $('#Combobox_DataTagsFilter').combobox('getValue');
-    if (m_DataTagsFilter == "Abnormal") {
-        GetAbnormalTagsList();
-    }
-    $('#dlg_SelectDataTags').dialog('open');
 }
 function ClearTags(mySelectedTargetId) {
     $('#' + mySelectedTargetId).datagrid("loadData", { "rows": [], "total": 0 });
 }
 function EditTrendTags() {
-    $('#dlg_SelectedTrendTags').dialog('open');
+    if (OrganizationId == "") {
+        alert("请选择分厂!");
+    }
+    else {
+        $('#dlg_SelectedTrendTags').dialog('open');
+    }
 }
 function ChangeTagsList(myRecord) {
-    if (myRecord.Id == "Abnormal") {
-        GetAbnormalTagsList();
-    }
-    else if (myRecord.Id == "Ammeter") {
+    if (myRecord.Id == "Ammeter") {
         GetAmmeterTagsList();
     }
     else if (myRecord.Id == "DCS") {
         GetDCSTagsList();
     }
-}
-function GetAbnormalTagsList() {
-    var m_AbnormalList = [];
-    var m_AbnormalColumn = $('#Text_AbnormalDataTime').textbox('getValue');
-    if (m_AbnormalColumn != "") {
-        m_AbnormalColumn = m_AbnormalColumn.replace(/-/g, "");
-        m_AbnormalColumn = m_AbnormalColumn.replace(/ /g, "");
-        m_AbnormalColumn = m_AbnormalColumn.replace(/:/g, "");
-        var m_DataRows = $('#dataGrid_BasicDataCorrection').datagrid("getRows");
-        for (var i = 0; i < m_DataRows.length; i++) {
-            if (m_DataRows[i][m_AbnormalColumn] != "") {
-                var m_AbnormalTemp = [];
-                m_AbnormalTemp["id"] = m_DataRows[i]["id"];
-                m_AbnormalTemp["FieldName"] = m_DataRows[i]["FieldName"];
-                m_AbnormalTemp["text"] = m_DataRows[i]["text"];
-                m_AbnormalTemp["Address"] = m_DataRows[i]["Address"];
-                m_AbnormalTemp["Type"] = m_DataRows[i]["Type"];
-                m_AbnormalTemp["AvgValue"] = m_DataRows[i]["AvgValue"];
-                m_AbnormalTemp["CorrectionValue"] = m_DataRows[i][m_AbnormalColumn];
-
-                m_AbnormalList.push(m_AbnormalTemp);
-            }
-        }
-    }
-    else {
-        var m_DataRows = $('#dataGrid_BasicDataCorrection').datagrid("getRows");
-        for (var i = 0; i < m_DataRows.length; i++) {
-            var m_AbnormalTemp = [];
-            m_AbnormalTemp["id"] = m_DataRows[i]["id"];
-            m_AbnormalTemp["FieldName"] = m_DataRows[i]["FieldName"];
-            m_AbnormalTemp["text"] = m_DataRows[i]["text"];
-            m_AbnormalTemp["Address"] = m_DataRows[i]["Address"];
-            m_AbnormalTemp["Type"] = m_DataRows[i]["Type"];
-            m_AbnormalTemp["AvgValue"] = m_DataRows[i]["AvgValue"];
-            m_AbnormalTemp["CorrectionValue"] = "";
-
-            m_AbnormalList.push(m_AbnormalTemp);
-        }
-    }
-    $('#dataGrid_SelectTagsList').datagrid("loadData", { "rows": m_AbnormalList, "total": m_AbnormalList.length });
 }
 function GetAmmeterTagsList() {
     var win = $.messager.progress({
@@ -577,6 +494,7 @@ function DisplayTrend() {
 
     var m_AmmeterFieldNames = "";
     var m_DCSFieldNames = "";
+
     for (var i = 0; i < m_TrendTagRows.length; i++) {
         if (m_TrendTagRows[i]["Type"] == "Ammeter") {
             if (m_AmmeterFieldNames == "") {
@@ -595,48 +513,68 @@ function DisplayTrend() {
             }
         }
     }
-    $.ajax({
-        type: "POST",
-        url: 'BasicDataCorrection.aspx/GetTrend',
-        data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime
-            + "',myAmmeterFieldNames:'" + m_AmmeterFieldNames + "',myDCSFieldNames:'" + m_DCSFieldNames + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (msg) {
-            var m_MsgData = jQuery.parseJSON(msg.d);
-            //GetLineChart({ "rows": [], "total": 0 });
-            if (m_MsgData != null && m_MsgData != undefined) {
-                GetLineChart(m_MsgData);
+    var m_ChartContentWidth = $('#ChartContentDiv').layout('panel', 'center').panel('options').width;
+    var m_ChartContentheight = $('#ChartContentDiv').layout('panel', 'center').panel('options').height;
+    SetChartContentSize(m_ChartContentWidth, m_ChartContentheight);
+    if (OrganizationId == "") {
+        alert("请选择分厂!");
+    }
+    else if (m_AmmeterFieldNames == "" && m_DCSFieldNames == "") {
+        alert("请添加趋势标签!");
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: 'BasicDataCorrection.aspx/GetTrend',
+            data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime
+                + "',myAmmeterFieldNames:'" + m_AmmeterFieldNames + "',myDCSFieldNames:'" + m_DCSFieldNames + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                var m_MsgData = jQuery.parseJSON(msg.d);
+                //GetLineChart({ "rows": [], "total": 0 });
+                if (m_MsgData != null && m_MsgData != undefined) {
+                    GetLineChart(m_MsgData);
+                }
+                $.messager.progress('close');
+            },
+            error: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', '数据载入失败！');
             }
-            $.messager.progress('close');
-        },
-        error: function () {
-            $.messager.progress('close');
-            $.messager.alert('错误', '数据载入失败！');
-        }
-    });
+        });
+    }
 }
 function CorrectionDataByTags() {
     endEditing();           //关闭正在编辑
+    var m_AllTagsValueValid = true;
     parent.$.messager.confirm('询问', '是否已经确认时间范围和数值<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确定修改数据?', function (r) {
         if (r) {
             var m_CorrectionTagRows = $('#dataGrid_CorrectionTags').datagrid("getRows");
             var m_StartTime = $('#datetimebox_CorrectionStartTime').datetimebox('getValue');
             var m_EndTime = $('#datetimebox_CorrectionEndTime').datetimebox('getValue');
-            var m_AbnormalDataTime = $('#Text_AbnormalDataTime').textbox('getValue');
             var m_TagsInfo = "";
             if (m_CorrectionTagRows != null && m_CorrectionTagRows != undefined) {
                 for (var i = 0; i < m_CorrectionTagRows.length; i++) {
-                    var m_CorrectionValue = m_CorrectionTagRows[i]["CorrectionValue"] != undefined ? m_CorrectionTagRows[i]["CorrectionValue"] : "0";
-                    if (i == 0) {
-                        m_TagsInfo = m_CorrectionTagRows[i]["FieldName"] + "," + m_CorrectionTagRows[i]["Type"] + "," + m_CorrectionValue;
+                    if (m_CorrectionTagRows[i]["CorrectionValue"] == undefined || m_CorrectionTagRows[i]["CorrectionValue"] == "") {
+                        m_AllTagsValueValid = false;
+                        break;
                     }
                     else {
-                        m_TagsInfo = m_TagsInfo + ";" + m_CorrectionTagRows[i]["FieldName"] + "," + m_CorrectionTagRows[i]["Type"] + "," + m_CorrectionValue;
+                        var m_CorrectionValue = m_CorrectionTagRows[i]["CorrectionValue"] != undefined ? m_CorrectionTagRows[i]["CorrectionValue"] : "0";
+                        if (i == 0) {
+                            m_TagsInfo = m_CorrectionTagRows[i]["FieldName"] + "," + m_CorrectionTagRows[i]["Type"] + "," + m_CorrectionValue;
+                        }
+                        else {
+                            m_TagsInfo = m_TagsInfo + ";" + m_CorrectionTagRows[i]["FieldName"] + "," + m_CorrectionTagRows[i]["Type"] + "," + m_CorrectionValue;
+                        }
                     }
                 }
             }
-            if (m_CorrectionTagRows.length > 0) {
+            if (m_AllTagsValueValid == false) {
+                alert("要修正的标签中需要全部计算出平均值和修正值!");
+            }
+            else if (m_CorrectionTagRows.length > 0) {
                 var win = $.messager.progress({
                     title: '请稍后',
                     msg: '数据处理中...'
@@ -645,7 +583,7 @@ function CorrectionDataByTags() {
                     type: "POST",
                     url: 'BasicDataCorrection.aspx/CorrectionDataByTags',
                     data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime
-                        + "',myAbnormalDataTime:'" + m_AbnormalDataTime + "',myTagsInfo:'" + m_TagsInfo + "'}",
+                        +  "',myTagsInfo:'" + m_TagsInfo + "'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
@@ -679,45 +617,104 @@ function CorrectionDataByTags() {
 }
 
 function ReCaculateBalanceData() {
-    parent.$.messager.confirm('询问', '是否已经确认时间范围<br/>&nbsp;&nbsp;&nbsp;确定重新生成数据?', function (r) {
-        if (r) {
-            var m_StartTime = $('#datetimebox_CorrectionStartTime').datetimebox('getValue');
-            var m_EndTime = $('#datetimebox_CorrectionEndTime').datetimebox('getValue');
-            var win = $.messager.progress({
-                title: '请稍后',
-                msg: '数据处理中...'
-            });
-            $.ajax({
-                type: "POST",
-                url: 'BasicDataCorrection.aspx/ReGenerateDataByDay',
-                data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var m_MsgData = msg.d;    //jQuery.parseJSON(msg.d);
-                    if (m_MsgData != null && m_MsgData != undefined) {
-                        if (m_MsgData == "1") {
-                            alert("修改成功!");
+    if (OrganizationId == "") {
+        alert("请选择分厂!");
+    }
+    else {
+        parent.$.messager.confirm('询问', '是否已经确认时间范围<br/>&nbsp;&nbsp;&nbsp;确定重新生成数据?', function (r) {
+            if (r) {
+                var m_StartTime = $('#datetimebox_CorrectionStartTime').datetimebox('getValue');
+                var m_EndTime = $('#datetimebox_CorrectionEndTime').datetimebox('getValue');
+                var win = $.messager.progress({
+                    title: '请稍后',
+                    msg: '数据处理中...'
+                });
+                $.ajax({
+                    type: "POST",
+                    url: 'BasicDataCorrection.aspx/ReGenerateDataByDay',
+                    data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        var m_MsgData = msg.d;    //jQuery.parseJSON(msg.d);
+                        if (m_MsgData != null && m_MsgData != undefined) {
+                            if (m_MsgData == "1") {
+                                alert("修改成功!");
+                            }
+                            else if (m_MsgData == "0") {
+                                alert("无可更新数据!");
+                            }
+                            else {
+                                alert("更新失败!");
+                            }
                         }
-                        else if (m_MsgData == "0") {
-                            alert("无可更新数据!");
-                        }
-                        else {
-                            alert("更新失败!");
-                        }
+                        $.messager.progress('close');
+                    },
+                    error: function () {
+                        $.messager.progress('close');
+                        $.messager.alert('错误', '数据载入失败！');
                     }
-                    $.messager.progress('close');
-                },
-                error: function () {
-                    $.messager.progress('close');
-                    $.messager.alert('错误', '数据载入失败！');
-                }
-            });
+                });
+            }
+        });
+    }
+}
+function CaculateAvgValue() {
+    var m_DataGridData = $('#dataGrid_CorrectionTags').datagrid('getData');
+    if (m_DataGridData['rows'].length > 0) {
+        var m_DataGridDataFormat = { "rows": [], "total": m_DataGridData['rows'].length };
+        for (var i = 0; i < m_DataGridData['rows'].length; i++) {
+            m_DataGridDataFormat["rows"].push({ "id": m_DataGridData['rows'][i].id, "text": m_DataGridData['rows'][i].text, "FieldName": m_DataGridData['rows'][i].FieldName, "Type": m_DataGridData['rows'][i].Type })
+        }
+        var m_DataGridDataJson = JSON.stringify(m_DataGridDataFormat);
+        var m_StartTime = $('#datetimebox_CorrectionStartTime').datetimebox('getValue');
+        var m_EndTime = $('#datetimebox_CorrectionEndTime').datetimebox('getValue');
+        $.ajax({
+            type: "POST",
+            url: "BasicDataCorrection.aspx/CaculateAvgValue",
+            data: "{myOrganizationId:'" + OrganizationId + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime + "',myDataGridData:'" + m_DataGridDataJson + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                var m_MsgData = jQuery.parseJSON(msg.d);
+                $('#dataGrid_CorrectionTags').datagrid("loadData", m_MsgData);
+            },
+            error: function (error) {
+                $('#dataGrid_CorrectionTags').datagrid("loadData", { "rows": [], "total": 0 });
+            }
+        });
+    }
+    else {
+        alert("请选择需要调整数据的标签!");
+    }
+}
+function AlarmInfoQuery() {
+    if (OrganizationId == "") {
+        alert("请选择分厂");
+    }
+    else {
+        $('#dlg_AlarmInfo').dialog('open');
+    }
+}
+function AlarmDetailQuery() {
+    var m_StartTime = $('#datetimebox_AlarmStartTimeF').datetimebox('getValue');
+    var m_EndTime = $('#datetimebox_AlarmEndTimeF').datetimebox('getValue');
+    var m_AlarmType = $('#combobox_AlarmTypeF').combobox('getValue');   
+    $.ajax({
+        type: "POST",
+        url: 'BasicDataCorrection.aspx/GetAlarmDetail',
+        data: "{myOrganizationId:'" + OrganizationId + "',myAlarmType:'" + m_AlarmType + "',myStartTime:'" + m_StartTime + "',myEndTime:'" + m_EndTime + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            var m_MsgData = jQuery.parseJSON(msg.d);
+            $('#dataGrid_AlarmInfo').datagrid("loadData", m_MsgData);
+        },
+        error: function (error) {
+            $('#dataGrid_AlarmInfo').datagrid("loadData", { "rows": [], "total": 0 });
         }
     });
 }
-
-
 function GetLineChart(myData) {
     var m_ChartData = [];
     var m_legendData = [];
@@ -734,7 +731,7 @@ function GetLineChart(myData) {
                 m_legendData[i] = myValue;
             }
             else {
-                var m_Date = myKey.replace('_',' ');
+                var m_Date = myKey.replace('_', ' ');
                 var m_PointValue = parseFloat(myValue);
                 //m_ChartData[i][j - 2] = [m_Date[1] + '/' + '01/' + m_Date[0], m_PointValue];
                 m_ChartData[i][j - 2] = [m_Date, m_PointValue];
@@ -777,7 +774,7 @@ function GetLineChart(myData) {
     }
 
     //if (PlotChartObj == undefined) {
-        
+
     //}
     //else {
     //    //PlotChartObj.series[0].data = m_ChartData;

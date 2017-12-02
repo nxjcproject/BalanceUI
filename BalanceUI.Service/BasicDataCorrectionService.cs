@@ -19,37 +19,63 @@ namespace BalanceUI.Service
         private const int DataColumnIndex = 6;
         private static readonly string _connStr = ConnectionStringFactory.NXJCConnectionString;
         private static readonly ISqlServerDataFactory _dataFactory = new SqlServerDataFactory(_connStr);
-        public static DataTable GetAbnormalData(string myOrganizationId, string myDeviationMagnification, string myCorrectionObject, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
-        {           
-            string m_FactoryDataBase = GetFactoryDataBase(myOrganizationId);
-            DataTable m_DeviationDataTable = new DataTable();
-            m_DeviationDataTable.Columns.Add("id",typeof(string));
-            m_DeviationDataTable.Columns.Add("text",typeof(string));
-            m_DeviationDataTable.Columns.Add("FieldName", typeof(string));
-            m_DeviationDataTable.Columns.Add("Address", typeof(string));
-            m_DeviationDataTable.Columns.Add("Type", typeof(string));
-            m_DeviationDataTable.Columns.Add("AvgValue", typeof(decimal));
-            if (m_FactoryDataBase != "")
+        public static DataTable GetAlarmType()
+        {
+            string m_Sql = @"SELECT A.AlarmTypeId as id
+                                  ,A.AlarmTypeName as text
+                                  ,A.AlarmGroup
+                              FROM system_SystemAlarmType A
+                              where A.AlarmGroup = 'SystemDiagnostics'
+                              order by A.DisplayIndex";
+            try
             {
-                DataTable m_DCSColumnNameTable = GetDCSInfoTable(m_FactoryDataBase);
-                DataTable m_AmmeterColumnNameTable = GetAmmeterInfoTable(m_FactoryDataBase);
-                DataTable m_DCSIncrementTable = GetDataIncrementInfo(m_FactoryDataBase + ".dbo.HistoryDCSIncrement", myDeviationMagnification, myMinValidValue, myStartTime, myEndTime, myStartTimeReference, myEndTimeReference);
-                DataTable m_AmmeterIncrementTable = GetDataIncrementInfo(m_FactoryDataBase + ".dbo.HistoryAmmeterIncrement", myDeviationMagnification, myMinValidValue, myStartTime, myEndTime, myStartTimeReference, myEndTimeReference);
-                if (myCorrectionObject == "All")
+                DataTable m_AlarmTypeTable = _dataFactory.Query(m_Sql);
+                if (m_AlarmTypeTable != null)
                 {
-                    GetDeviationData(m_DCSColumnNameTable, m_AmmeterColumnNameTable, m_DCSIncrementTable, m_AmmeterIncrementTable, myDeviationMagnification, ref m_DeviationDataTable);
+                    DataRow m_NewAlarmTypeRow = m_AlarmTypeTable.NewRow();
+                    m_NewAlarmTypeRow["id"] = "MainMachineHalt";
+                    m_NewAlarmTypeRow["text"] = "主设备停机";
+                    m_NewAlarmTypeRow["AlarmGroup"] = "MachineHalt";
+                    m_AlarmTypeTable.Rows.Add(m_NewAlarmTypeRow);
                 }
-                else if (myCorrectionObject == "MaterialWeight")
-                {
-                    GetDeviationData(m_DCSColumnNameTable, null, m_DCSIncrementTable, null, myDeviationMagnification, ref m_DeviationDataTable);
-                }
-                else if (myCorrectionObject == "ElectricityQuantity")
-                {
-                    GetDeviationData(null, m_AmmeterColumnNameTable, null, m_AmmeterIncrementTable, myDeviationMagnification, ref m_DeviationDataTable);
-                }
+                return m_AlarmTypeTable;
             }
-            return m_DeviationDataTable;
+            catch
+            {
+                return null;
+            }
         }
+        //public static DataTable GetAbnormalData(string myOrganizationId, string myDeviationMagnification, string myCorrectionObject, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
+        //{
+        //    string m_FactoryDataBase = GetFactoryDataBase(myOrganizationId);
+        //    DataTable m_DeviationDataTable = new DataTable();
+        //    m_DeviationDataTable.Columns.Add("id", typeof(string));
+        //    m_DeviationDataTable.Columns.Add("text", typeof(string));
+        //    m_DeviationDataTable.Columns.Add("FieldName", typeof(string));
+        //    m_DeviationDataTable.Columns.Add("Address", typeof(string));
+        //    m_DeviationDataTable.Columns.Add("Type", typeof(string));
+        //    m_DeviationDataTable.Columns.Add("AvgValue", typeof(decimal));
+        //    if (m_FactoryDataBase != "")
+        //    {
+        //        DataTable m_DCSColumnNameTable = GetDCSInfoTable(m_FactoryDataBase);
+        //        DataTable m_AmmeterColumnNameTable = GetAmmeterInfoTable(m_FactoryDataBase);
+        //        DataTable m_DCSIncrementTable = GetDataIncrementInfo(m_FactoryDataBase + ".dbo.HistoryDCSIncrement", myDeviationMagnification, myMinValidValue, myStartTime, myEndTime, myStartTimeReference, myEndTimeReference);
+        //        DataTable m_AmmeterIncrementTable = GetDataIncrementInfo(m_FactoryDataBase + ".dbo.HistoryAmmeterIncrement", myDeviationMagnification, myMinValidValue, myStartTime, myEndTime, myStartTimeReference, myEndTimeReference);
+        //        if (myCorrectionObject == "All")
+        //        {
+        //            GetDeviationData(m_DCSColumnNameTable, m_AmmeterColumnNameTable, m_DCSIncrementTable, m_AmmeterIncrementTable, myDeviationMagnification, ref m_DeviationDataTable);
+        //        }
+        //        else if (myCorrectionObject == "MaterialWeight")
+        //        {
+        //            GetDeviationData(m_DCSColumnNameTable, null, m_DCSIncrementTable, null, myDeviationMagnification, ref m_DeviationDataTable);
+        //        }
+        //        else if (myCorrectionObject == "ElectricityQuantity")
+        //        {
+        //            GetDeviationData(null, m_AmmeterColumnNameTable, null, m_AmmeterIncrementTable, myDeviationMagnification, ref m_DeviationDataTable);
+        //        }
+        //    }
+        //    return m_DeviationDataTable;
+        //}
         public static string GetFactoryDataBase(string myOrganizationId)
         {
             string m_Sql = @"Select B.MeterDatabase, A.OrganizationId from system_Organization A, system_Database B
@@ -120,241 +146,241 @@ namespace BalanceUI.Service
                 return null;
             }
         }
-        private static DataTable GetDataIncrementInfo(string myDataTableName, string myDeviationMagnification, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
-        {
-            DataTable m_DataIncrementColumnsTable = GetDataIncrementColumns(myDataTableName);
-            //通过ColumnName统计查询的字段信息
-            string m_Sql = @"Select 'Current' as Flag, A.vDate {5} from {0} A,
-                                        (Select {6} from {0} B
-                                          where B.vDate >='{3}'
-                                          and B.vDate <= '{4}') C
-                                        where A.vDate >='{1}'
-                                          and A.vDate <= '{2}'
-                                          {7}
-                                        union all
-                                        Select 'Avg' as Flag, null as vDate, {6} from {0} B
-                                          where B.vDate >='{3}'
-                                          and B.vDate <= '{4}'
-                                          order by vDate";
+//        private static DataTable GetDataIncrementInfo(string myDataTableName, string myDeviationMagnification, string myMinValidValue, string myStartTime, string myEndTime, string myStartTimeReference, string myEndTimeReference)
+//        {
+//            DataTable m_DataIncrementColumnsTable = GetDataIncrementColumns(myDataTableName);
+//            //通过ColumnName统计查询的字段信息
+//            string m_Sql = @"Select 'Current' as Flag, A.vDate {5} from {0} A,
+//                                        (Select {6} from {0} B
+//                                          where B.vDate >='{3}'
+//                                          and B.vDate <= '{4}') C
+//                                        where A.vDate >='{1}'
+//                                          and A.vDate <= '{2}'
+//                                          {7}
+//                                        union all
+//                                        Select 'Avg' as Flag, null as vDate, {6} from {0} B
+//                                          where B.vDate >='{3}'
+//                                          and B.vDate <= '{4}'
+//                                          order by vDate";
 
-            string m_SelectColumn = "";
-            string m_SubSelectColumn = "";
-            string m_DiffCondition = "";
-            if (m_DataIncrementColumnsTable != null && m_DataIncrementColumnsTable.Columns.Count > 1)
-            {
-                for (int i = 1; i < m_DataIncrementColumnsTable.Columns.Count; i++)
-                {
-                    m_SelectColumn = m_SelectColumn + string.Format(", case when A.{0} is null then 0.0 else A.{0} end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
-                    if (i == 1)
-                    {
-                        m_SubSelectColumn = string.Format(" case when avg(case when B.{0} < {1} then null else B.{0} end) is null then {1} else avg(case when B.{0} < {1} then null else B.{0} end) end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myMinValidValue);
-                        m_DiffCondition = string.Format(" and ((abs(A.{0}) - C.{0} * {1}) > 0", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
-                    }
-                    else
-                    {
-                        m_SubSelectColumn = m_SubSelectColumn + string.Format(", case when avg(case when B.{0} < {1} then null else B.{0} end) is null then {1} else avg(case when B.{0} < {1} then null else B.{0} end) end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myMinValidValue);
-                        m_DiffCondition = m_DiffCondition + string.Format(" or (abs(A.{0}) - C.{0} * {1}) > 0", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
-                    }
-                }
-                if (m_DiffCondition != "")
-                {
-                    m_DiffCondition = m_DiffCondition + ")";
-                }
-                m_Sql = m_Sql.Replace("{0}", myDataTableName);
-                m_Sql = m_Sql.Replace("{1}", myStartTime);
-                m_Sql = m_Sql.Replace("{2}", myEndTime);
-                m_Sql = m_Sql.Replace("{3}", myStartTimeReference);
-                m_Sql = m_Sql.Replace("{4}", myEndTimeReference);
-                m_Sql = m_Sql.Replace("{5}", m_SelectColumn);
-                m_Sql = m_Sql.Replace("{6}", m_SubSelectColumn);
-                m_Sql = m_Sql.Replace("{7}", m_DiffCondition);
-                try
-                {
-                    DataTable m_MachineHaltTable = _dataFactory.Query(m_Sql);
-                    return m_MachineHaltTable;
-                }
-                catch
-                {
-                    return null;   //"{\"rows\":[],\"total\":0}";
-                }
-            }
-            else
-            {
-                return null;
-            }
+//            string m_SelectColumn = "";
+//            string m_SubSelectColumn = "";
+//            string m_DiffCondition = "";
+//            if (m_DataIncrementColumnsTable != null && m_DataIncrementColumnsTable.Columns.Count > 1)
+//            {
+//                for (int i = 1; i < m_DataIncrementColumnsTable.Columns.Count; i++)
+//                {
+//                    m_SelectColumn = m_SelectColumn + string.Format(", case when A.{0} is null then 0.0 else A.{0} end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
+//                    if (i == 1)
+//                    {
+//                        m_SubSelectColumn = string.Format(" case when avg(case when B.{0} < {1} then null else B.{0} end) is null then {1} else avg(case when B.{0} < {1} then null else B.{0} end) end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myMinValidValue);
+//                        m_DiffCondition = string.Format(" and ((abs(A.{0}) - C.{0} * {1}) > 0", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
+//                    }
+//                    else
+//                    {
+//                        m_SubSelectColumn = m_SubSelectColumn + string.Format(", case when avg(case when B.{0} < {1} then null else B.{0} end) is null then {1} else avg(case when B.{0} < {1} then null else B.{0} end) end as {0}", m_DataIncrementColumnsTable.Columns[i].ColumnName, myMinValidValue);
+//                        m_DiffCondition = m_DiffCondition + string.Format(" or (abs(A.{0}) - C.{0} * {1}) > 0", m_DataIncrementColumnsTable.Columns[i].ColumnName, myDeviationMagnification);
+//                    }
+//                }
+//                if (m_DiffCondition != "")
+//                {
+//                    m_DiffCondition = m_DiffCondition + ")";
+//                }
+//                m_Sql = m_Sql.Replace("{0}", myDataTableName);
+//                m_Sql = m_Sql.Replace("{1}", myStartTime);
+//                m_Sql = m_Sql.Replace("{2}", myEndTime);
+//                m_Sql = m_Sql.Replace("{3}", myStartTimeReference);
+//                m_Sql = m_Sql.Replace("{4}", myEndTimeReference);
+//                m_Sql = m_Sql.Replace("{5}", m_SelectColumn);
+//                m_Sql = m_Sql.Replace("{6}", m_SubSelectColumn);
+//                m_Sql = m_Sql.Replace("{7}", m_DiffCondition);
+//                try
+//                {
+//                    DataTable m_MachineHaltTable = _dataFactory.Query(m_Sql);
+//                    return m_MachineHaltTable;
+//                }
+//                catch
+//                {
+//                    return null;   //"{\"rows\":[],\"total\":0}";
+//                }
+//            }
+//            else
+//            {
+//                return null;
+//            }
 
 
-        }
-        private static DataTable GetDataIncrementColumns(string myDataTableName)
-        {
-            string m_Sql = @"SELECT top 0 A.* FROM {0} A";
-            m_Sql = string.Format(m_Sql, myDataTableName);
-            try
-            {
-                DataTable m_DataIncrementTable = _dataFactory.Query(m_Sql);
-                return m_DataIncrementTable;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        private static void GetDeviationData(DataTable myDCSColumnNameTable, DataTable myAmmeterColumnNameTable, DataTable myDCSIncrementTable, DataTable myAmmeterIncrementTable, string myDeviationMagnification, ref DataTable myDeviationDataTable)
-        {
-            List<string> m_DateTimeArray = new List<string>();
-            if (myAmmeterColumnNameTable != null && myAmmeterIncrementTable != null)
-            {
-                for (int i = 0; i < myAmmeterIncrementTable.Rows.Count; i++)
-                {
-                    if (myAmmeterIncrementTable.Rows[i]["Flag"].ToString() == "Current" && myAmmeterIncrementTable.Rows[i]["vDate"] != DBNull.Value)
-                    {
-                        if (!m_DateTimeArray.Contains(((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss")))
-                        {
-                            m_DateTimeArray.Add(((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss"));
-                        }
-                    }
-                }
-            }
-            if (myDCSColumnNameTable != null && myDCSIncrementTable != null)
-            {
-                for (int i = 0; i < myDCSIncrementTable.Rows.Count; i++)
-                {
-                    if (myDCSIncrementTable.Rows[i]["Flag"].ToString() == "Current" && myDCSIncrementTable.Rows[i]["vDate"] != DBNull.Value)
-                    {
-                        if (!m_DateTimeArray.Contains(((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss")))
-                        {
-                            m_DateTimeArray.Add(((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss"));
-                        }
-                    }
-                }
-            }
-            m_DateTimeArray.Sort();
-            for (int i = 0; i < m_DateTimeArray.Count; i++)
-            {
-                myDeviationDataTable.Columns.Add(m_DateTimeArray[i],typeof(decimal));
-            }
-            if (myAmmeterColumnNameTable != null && myAmmeterIncrementTable != null)
-            {
-                DataRow[] m_AvgValueRow = myAmmeterIncrementTable.Select("Flag = 'Avg' and vDate is null");
-                if (m_AvgValueRow.Length > 0)
-                {
-                    for (int j = 2; j < myAmmeterIncrementTable.Columns.Count; j++)
-                    {
-                        DataRow[] m_AmmeterNameRow = GetTargetName(myAmmeterIncrementTable.Columns[j].ColumnName, myAmmeterColumnNameTable);
-                        if (m_AmmeterNameRow.Length > 0)
-                        {
-                            DataRow m_NewRow = myDeviationDataTable.NewRow();      //一个字段对应的添加一行
-                            m_NewRow["id"] = m_AmmeterNameRow[0]["id"].ToString();
-                            m_NewRow["FieldName"] = m_AmmeterNameRow[0]["FieldName"].ToString();
-                            m_NewRow["Address"] = m_AmmeterNameRow[0]["Address"].ToString();
-                            m_NewRow["text"] = m_AmmeterNameRow[0]["text"].ToString();
-                            m_NewRow["Type"] = "Ammeter";
-                            m_NewRow["AvgValue"] = m_AvgValueRow[0][j];
-                            for (int i = 0; i < myAmmeterIncrementTable.Rows.Count; i++)
-                            {
-                                if (myAmmeterIncrementTable.Rows[i]["vDate"] != DBNull.Value)
-                                {
-                                    string m_ColumnNameTemp = ((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss");
-                                    if ((decimal)myAmmeterIncrementTable.Rows[i][j] - (decimal)m_AvgValueRow[0][j] * decimal.Parse(myDeviationMagnification) > 0)
-                                    {
-                                        if (myDeviationDataTable.Columns.Contains(m_ColumnNameTemp))
-                                        {
-                                            m_NewRow[m_ColumnNameTemp] = myAmmeterIncrementTable.Rows[i][j];
-                                        }
-                                    }
-                                }
-                            }
-                            myDeviationDataTable.Rows.Add(m_NewRow);
-                        }
-                    }
-                }
-            }
-            if (myDCSColumnNameTable != null && myDCSIncrementTable != null)
-            {
-                DataRow[] m_AvgValueRow = myDCSIncrementTable.Select("Flag = 'Avg' and vDate is null");
-                if (m_AvgValueRow.Length > 0)
-                {
-                    for (int j = 2; j < myDCSIncrementTable.Columns.Count; j++)
-                    {
-                        DataRow[] m_DCSNameRow = GetTargetName(myDCSIncrementTable.Columns[j].ColumnName, myDCSColumnNameTable);
-                        if (m_DCSNameRow.Length > 0)
-                        {
-                            DataRow m_NewRow = myDeviationDataTable.NewRow();      //一个字段对应的添加一行
-                            m_NewRow["id"] = m_DCSNameRow[0]["id"].ToString();
-                            m_NewRow["FieldName"] = m_DCSNameRow[0]["FieldName"].ToString();
-                            m_NewRow["Address"] = m_DCSNameRow[0]["Address"].ToString();
-                            m_NewRow["text"] = m_DCSNameRow[0]["text"].ToString();
-                            m_NewRow["Type"] = "DCS";
-                            m_NewRow["AvgValue"] = m_AvgValueRow[0][j];
-                            for (int i = 0; i < myDCSIncrementTable.Rows.Count; i++)
-                            {
-                                if (myDCSIncrementTable.Rows[i]["vDate"] != DBNull.Value)
-                                {
-                                    string m_ColumnNameTemp = ((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss");
-                                    if ((decimal)myDCSIncrementTable.Rows[i][j] - (decimal)m_AvgValueRow[0][j] * decimal.Parse(myDeviationMagnification) > 0)
-                                    {
-                                        if (myDeviationDataTable.Columns.Contains(m_ColumnNameTemp))
-                                        {
-                                            m_NewRow[m_ColumnNameTemp] = myDCSIncrementTable.Rows[i][j];
-                                        }
-                                    }
-                                }
-                            }
-                            myDeviationDataTable.Rows.Add(m_NewRow);
-                        }
-                    }
-                }
-            }
+//        }
+//        private static DataTable GetDataIncrementColumns(string myDataTableName)
+//        {
+//            string m_Sql = @"SELECT top 0 A.* FROM {0} A";
+//            m_Sql = string.Format(m_Sql, myDataTableName);
+//            try
+//            {
+//                DataTable m_DataIncrementTable = _dataFactory.Query(m_Sql);
+//                return m_DataIncrementTable;
+//            }
+//            catch
+//            {
+//                return null;
+//            }
+//        }
+//        private static void GetDeviationData(DataTable myDCSColumnNameTable, DataTable myAmmeterColumnNameTable, DataTable myDCSIncrementTable, DataTable myAmmeterIncrementTable, string myDeviationMagnification, ref DataTable myDeviationDataTable)
+//        {
+//            List<string> m_DateTimeArray = new List<string>();
+//            if (myAmmeterColumnNameTable != null && myAmmeterIncrementTable != null)
+//            {
+//                for (int i = 0; i < myAmmeterIncrementTable.Rows.Count; i++)
+//                {
+//                    if (myAmmeterIncrementTable.Rows[i]["Flag"].ToString() == "Current" && myAmmeterIncrementTable.Rows[i]["vDate"] != DBNull.Value)
+//                    {
+//                        if (!m_DateTimeArray.Contains(((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss")))
+//                        {
+//                            m_DateTimeArray.Add(((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss"));
+//                        }
+//                    }
+//                }
+//            }
+//            if (myDCSColumnNameTable != null && myDCSIncrementTable != null)
+//            {
+//                for (int i = 0; i < myDCSIncrementTable.Rows.Count; i++)
+//                {
+//                    if (myDCSIncrementTable.Rows[i]["Flag"].ToString() == "Current" && myDCSIncrementTable.Rows[i]["vDate"] != DBNull.Value)
+//                    {
+//                        if (!m_DateTimeArray.Contains(((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss")))
+//                        {
+//                            m_DateTimeArray.Add(((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss"));
+//                        }
+//                    }
+//                }
+//            }
+//            m_DateTimeArray.Sort();
+//            for (int i = 0; i < m_DateTimeArray.Count; i++)
+//            {
+//                myDeviationDataTable.Columns.Add(m_DateTimeArray[i], typeof(decimal));
+//            }
+//            if (myAmmeterColumnNameTable != null && myAmmeterIncrementTable != null)
+//            {
+//                DataRow[] m_AvgValueRow = myAmmeterIncrementTable.Select("Flag = 'Avg' and vDate is null");
+//                if (m_AvgValueRow.Length > 0)
+//                {
+//                    for (int j = 2; j < myAmmeterIncrementTable.Columns.Count; j++)
+//                    {
+//                        DataRow[] m_AmmeterNameRow = GetTargetName(myAmmeterIncrementTable.Columns[j].ColumnName, myAmmeterColumnNameTable);
+//                        if (m_AmmeterNameRow.Length > 0)
+//                        {
+//                            DataRow m_NewRow = myDeviationDataTable.NewRow();      //一个字段对应的添加一行
+//                            m_NewRow["id"] = m_AmmeterNameRow[0]["id"].ToString();
+//                            m_NewRow["FieldName"] = m_AmmeterNameRow[0]["FieldName"].ToString();
+//                            m_NewRow["Address"] = m_AmmeterNameRow[0]["Address"].ToString();
+//                            m_NewRow["text"] = m_AmmeterNameRow[0]["text"].ToString();
+//                            m_NewRow["Type"] = "Ammeter";
+//                            m_NewRow["AvgValue"] = m_AvgValueRow[0][j];
+//                            for (int i = 0; i < myAmmeterIncrementTable.Rows.Count; i++)
+//                            {
+//                                if (myAmmeterIncrementTable.Rows[i]["vDate"] != DBNull.Value)
+//                                {
+//                                    string m_ColumnNameTemp = ((DateTime)myAmmeterIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss");
+//                                    if ((decimal)myAmmeterIncrementTable.Rows[i][j] - (decimal)m_AvgValueRow[0][j] * decimal.Parse(myDeviationMagnification) > 0)
+//                                    {
+//                                        if (myDeviationDataTable.Columns.Contains(m_ColumnNameTemp))
+//                                        {
+//                                            m_NewRow[m_ColumnNameTemp] = myAmmeterIncrementTable.Rows[i][j];
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            myDeviationDataTable.Rows.Add(m_NewRow);
+//                        }
+//                    }
+//                }
+//            }
+//            if (myDCSColumnNameTable != null && myDCSIncrementTable != null)
+//            {
+//                DataRow[] m_AvgValueRow = myDCSIncrementTable.Select("Flag = 'Avg' and vDate is null");
+//                if (m_AvgValueRow.Length > 0)
+//                {
+//                    for (int j = 2; j < myDCSIncrementTable.Columns.Count; j++)
+//                    {
+//                        DataRow[] m_DCSNameRow = GetTargetName(myDCSIncrementTable.Columns[j].ColumnName, myDCSColumnNameTable);
+//                        if (m_DCSNameRow.Length > 0)
+//                        {
+//                            DataRow m_NewRow = myDeviationDataTable.NewRow();      //一个字段对应的添加一行
+//                            m_NewRow["id"] = m_DCSNameRow[0]["id"].ToString();
+//                            m_NewRow["FieldName"] = m_DCSNameRow[0]["FieldName"].ToString();
+//                            m_NewRow["Address"] = m_DCSNameRow[0]["Address"].ToString();
+//                            m_NewRow["text"] = m_DCSNameRow[0]["text"].ToString();
+//                            m_NewRow["Type"] = "DCS";
+//                            m_NewRow["AvgValue"] = m_AvgValueRow[0][j];
+//                            for (int i = 0; i < myDCSIncrementTable.Rows.Count; i++)
+//                            {
+//                                if (myDCSIncrementTable.Rows[i]["vDate"] != DBNull.Value)
+//                                {
+//                                    string m_ColumnNameTemp = ((DateTime)myDCSIncrementTable.Rows[i]["vDate"]).ToString("yyyyMMddHHmmss");
+//                                    if ((decimal)myDCSIncrementTable.Rows[i][j] - (decimal)m_AvgValueRow[0][j] * decimal.Parse(myDeviationMagnification) > 0)
+//                                    {
+//                                        if (myDeviationDataTable.Columns.Contains(m_ColumnNameTemp))
+//                                        {
+//                                            m_NewRow[m_ColumnNameTemp] = myDCSIncrementTable.Rows[i][j];
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            myDeviationDataTable.Rows.Add(m_NewRow);
+//                        }
+//                    }
+//                }
+//            }
 
-            //去掉不用改变数据的标签
-            int m_RowIndex = 0;
-            while (m_RowIndex < myDeviationDataTable.Rows.Count)
-            {
-                bool m_IsAllRowNull = true;
-                for (int j = DataColumnIndex; j < myDeviationDataTable.Columns.Count; j++)        //检验是否都是null
-                {
-                    if (myDeviationDataTable.Rows[m_RowIndex][j] != DBNull.Value)
-                    {
-                        m_IsAllRowNull = false;
-                        break;
-                    }
-                }
-                if (m_IsAllRowNull)
-                {
-                    myDeviationDataTable.Rows.RemoveAt(m_RowIndex);
-                }
-                else
-                {
-                    m_RowIndex = m_RowIndex + 1;
-                }
-            }
-        }
+//            //去掉不用改变数据的标签
+//            int m_RowIndex = 0;
+//            while (m_RowIndex < myDeviationDataTable.Rows.Count)
+//            {
+//                bool m_IsAllRowNull = true;
+//                for (int j = DataColumnIndex; j < myDeviationDataTable.Columns.Count; j++)        //检验是否都是null
+//                {
+//                    if (myDeviationDataTable.Rows[m_RowIndex][j] != DBNull.Value)
+//                    {
+//                        m_IsAllRowNull = false;
+//                        break;
+//                    }
+//                }
+//                if (m_IsAllRowNull)
+//                {
+//                    myDeviationDataTable.Rows.RemoveAt(m_RowIndex);
+//                }
+//                else
+//                {
+//                    m_RowIndex = m_RowIndex + 1;
+//                }
+//            }
+//        }
 
-        public static string GetColumnJsonString(DataTable myResultTable)
-        {
-            string m_ColumnsTemp = "";
-            if (myResultTable.Columns.Count > DataColumnIndex)
-            {
-                for (int i = DataColumnIndex; i < myResultTable.Columns.Count; i++)
-                {
-                    if (i == DataColumnIndex)
-                    {
-                        m_ColumnsTemp = "\"" + myResultTable.Columns[i].ColumnName + "\"";
-                    }
-                    else
-                    {
-                        m_ColumnsTemp = m_ColumnsTemp + "," + "\"" + myResultTable.Columns[i].ColumnName + "\"";
-                    }
-                }
-            }
-            string m_ColumnsString = string.Format("\"columns\":[{0}]", m_ColumnsTemp);
-            return m_ColumnsString;
-        }
-        private static DataRow[] GetTargetName(string myColumnName, DataTable myAmmeterColumnNameTable)
-        {
-            DataRow[] m_TargetName = myAmmeterColumnNameTable.Select(string.Format("FieldName = '{0}'", myColumnName));
-            return m_TargetName;
-        }
+//        public static string GetColumnJsonString(DataTable myResultTable)
+//        {
+//            string m_ColumnsTemp = "";
+//            if (myResultTable.Columns.Count > DataColumnIndex)
+//            {
+//                for (int i = DataColumnIndex; i < myResultTable.Columns.Count; i++)
+//                {
+//                    if (i == DataColumnIndex)
+//                    {
+//                        m_ColumnsTemp = "\"" + myResultTable.Columns[i].ColumnName + "\"";
+//                    }
+//                    else
+//                    {
+//                        m_ColumnsTemp = m_ColumnsTemp + "," + "\"" + myResultTable.Columns[i].ColumnName + "\"";
+//                    }
+//                }
+//            }
+//            string m_ColumnsString = string.Format("\"columns\":[{0}]", m_ColumnsTemp);
+//            return m_ColumnsString;
+//        }
+//        private static DataRow[] GetTargetName(string myColumnName, DataTable myAmmeterColumnNameTable)
+//        {
+//            DataRow[] m_TargetName = myAmmeterColumnNameTable.Select(string.Format("FieldName = '{0}'", myColumnName));
+//            return m_TargetName;
+//        }
         public static DataTable GetTrend(string myOrganizationId, string myStartTime, string myEndTime, string myAmmeterFieldNames, string myDCSFieldNames)
         {
             string m_FactoryDataBase = GetFactoryDataBase(myOrganizationId);
@@ -381,8 +407,8 @@ namespace BalanceUI.Service
                 }
             }
             DataTable m_TrendSourceDataTable = GetTrendData(m_FactoryDataBase, m_AmmeterFieldArray.ToArray(), m_DCSFieldArray.ToArray(), myStartTime, myEndTime);
-            
-            DataTable m_TrendDataTable= GetTrendDataTable(m_TrendSourceDataTable);
+
+            DataTable m_TrendDataTable = GetTrendDataTable(m_TrendSourceDataTable);
             return m_TrendDataTable;
         }
         private static DataTable GetTrendData(string myDataBaseName, string[] myAmmeterFieldArray, string[] myDCSFieldArray, string myStartTime, string myEndTime)
@@ -462,9 +488,122 @@ namespace BalanceUI.Service
             }
             return m_TrendDataTable;
         }
+        public static DataTable GetAlarmDetail(string myOrganizationId, string myAlarmType, string myStartTime, string myEndTime)
+        {
+
+            string m_Sql = @"SELECT A.AlarmItemId as AlarmId
+                                      ,A.StartTime
+                                      ,A.EndTime
+                                      ,'[' + B.AlarmTypeName + ']' + A.AlarmText as AlarmText
+                                  FROM system_AlarmLog A
+                                  left join system_SystemAlarmType B on A.AlarmTypeId = B.AlarmTypeId
+                                  where A.AlarmGroup = 'SystemDiagnostics'
+                                  and A.OrganizationID = '{0}'
+                                  and ((A.StartTime >= '{1}' and A.StarTtime <'{2}') or
+                                        (A.EndTime >= '{1}' and A.EndTime <'{2}')) 
+                                  {3}
+                                union all
+                                SELECT A.MachineHaltLogID as AlarmId
+                                      ,A.StartTime
+                                      ,A.HaltTime as EndTime
+                                      ,'[设备启停]' + A.EquipmentName + (case when A.ReasonText is null then '' else A.ReasonText end) + (case when A.Remarks is null then '' else A.Remarks end) as AlarmText
+                                  FROM shift_MachineHaltLog A, equipment_EquipmentDetail B
+                                  where B.OrganizationID = '{0}'
+                                  and A.EquipmentID = B.EquipmentId
+                                  and ((A.StartTime >= '{1}' and A.Starttime <'{2}') or
+                                        (A.HaltTime >= '{1}' and A.HaltTime <'{2}'))
+                                  {4}
+                                  order by A.StartTime";
+            string m_SystemDiagnosticsType = "";
+            string m_MainMachineHaltType = "";
+            if(myAlarmType != "All")
+            {
+                m_SystemDiagnosticsType = string.Format(" and A.AlarmTypeId = '{0}' ", myAlarmType);
+                m_MainMachineHaltType = string.Format(" and 'MainMachineHalt' = '{0}' ", myAlarmType);
+            }
+            m_Sql = string.Format(m_Sql, myOrganizationId, myStartTime, myEndTime, m_SystemDiagnosticsType, m_MainMachineHaltType);
+            try
+            {
+                DataTable m_AlarmDetailTable = _dataFactory.Query(m_Sql);
+                return m_AlarmDetailTable;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         //////////////////////////////修正数据/////////////////////////////
-        public static string CorrectionDataByTags(string myOrganizationId, string myStartTime, string myEndTime, string myAbnormalDataTime, string myTagsInfo)
+        public static DataTable CreateCaculateAvgTableStructure(string myTableName)
+        {
+            DataTable m_CaculateAvgTable = new DataTable(myTableName);
+            m_CaculateAvgTable.Columns.Add("id", typeof(string));
+            m_CaculateAvgTable.Columns.Add("text", typeof(string));
+            m_CaculateAvgTable.Columns.Add("FieldName", typeof(string));
+            m_CaculateAvgTable.Columns.Add("Type", typeof(string));
+            m_CaculateAvgTable.Columns.Add("AvgValue", typeof(decimal));
+            m_CaculateAvgTable.Columns.Add("CorrectionValue", typeof(decimal));
+
+            return m_CaculateAvgTable;
+        }
+        public static void CaculateAvgValueByTags(string myStartTime, string myEndTime, string myFactoryDataBaseName, ref DataTable myDataGridData)
+        {
+            Dictionary<string, string> m_Tags = new Dictionary<string, string>();
+            if (myDataGridData != null)
+            {
+                for (int i = 0; i < myDataGridData.Rows.Count; i++)
+                {
+                    string m_KeyTemp = myDataGridData.Rows[i]["Type"].ToString();
+                    string m_ColumnNameTemp = myDataGridData.Rows[i]["FieldName"].ToString();
+                    if (!m_Tags.ContainsKey(m_KeyTemp))
+                    {
+                        m_Tags.Add(m_KeyTemp, "avg(" + m_ColumnNameTemp + ") as Avg_" + m_ColumnNameTemp + ",sum(" + m_ColumnNameTemp + ") as Sum_" + m_ColumnNameTemp);
+                    }
+                    else
+                    {
+                        m_Tags[m_KeyTemp] = m_Tags[m_KeyTemp] + ",avg(" + m_ColumnNameTemp + ") as Avg_" + m_ColumnNameTemp + ",sum(" + m_ColumnNameTemp + ") as Sum_" + m_ColumnNameTemp;
+                    }
+                }
+            }
+            foreach (string Key in m_Tags.Keys)
+            {
+                string m_Sql = @"SELECT {0} FROM {1} A
+                              where A.vDate >= '{2}'
+                              and A.vDate <= '{3}'";
+                if (Key == "Ammeter")
+                {
+                    m_Sql = string.Format(m_Sql, m_Tags[Key], myFactoryDataBaseName + ".dbo.HistoryAmmeterIncrement", myStartTime, myEndTime);  //获得电表数据查询结果
+                }
+                else if (Key == "DCS")
+                {
+                    m_Sql = string.Format(m_Sql, m_Tags[Key], myFactoryDataBaseName + ".dbo.HistoryDCSIncrement", myStartTime, myEndTime);              //获得DCS数据查询结果
+                }
+
+                try
+                {
+                    DataTable m_CaculateDataTable = _dataFactory.Query(m_Sql);
+                    if (m_CaculateDataTable != null && m_CaculateDataTable.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < myDataGridData.Rows.Count; i++)
+                        {
+                            string m_ColumnTemp = myDataGridData.Rows[i]["FieldName"].ToString();
+                            if (m_CaculateDataTable.Columns.Contains("Sum_" + m_ColumnTemp))
+                            {
+                                myDataGridData.Rows[i]["CorrectionValue"] = m_CaculateDataTable.Rows[0]["Sum_" + m_ColumnTemp];
+                            }
+                            if (m_CaculateDataTable.Columns.Contains("Avg_" + m_ColumnTemp))
+                            {
+                                myDataGridData.Rows[i]["AvgValue"] = m_CaculateDataTable.Rows[0]["Avg_" + m_ColumnTemp];
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+        public static string CorrectionDataByTags(string myOrganizationId, string myStartTime, string myEndTime, string myTagsInfo)
         {
             int m_ObjectRowsCount = 0;
             List<string> m_AmmeterFieldArray = new List<string>();
@@ -491,8 +630,8 @@ namespace BalanceUI.Service
                 string m_FactoryDataBaseName = GetFactoryDataBase(myOrganizationId);
                 DataTable m_AmmeterDataTable = GetSourceData(myStartTime, myEndTime, m_AmmeterFieldArray, m_FactoryDataBaseName + ".dbo.HistoryAmmeterIncrement");  //获得电表数据查询结果
                 DataTable m_DCSDataTable = GetSourceData(myStartTime, myEndTime, m_DCSFieldArray, m_FactoryDataBaseName + ".dbo.HistoryDCSIncrement");              //获得DCS数据查询结果
-                m_ObjectRowsCount = SetCorrectionData(m_AmmeterDataTable, m_AmmeterFieldArray, m_AmmeterCorrectionDataArray, myStartTime, myEndTime, myAbnormalDataTime, m_FactoryDataBaseName + ".dbo.HistoryAmmeterIncrement");              //获得需要插入/更新增量历史表的数据
-                m_ObjectRowsCount = m_ObjectRowsCount + SetCorrectionData(m_DCSDataTable, m_DCSFieldArray, m_DCSCorrectionDataArray, myStartTime, myEndTime, myAbnormalDataTime, m_FactoryDataBaseName + ".dbo.HistoryDCSIncrement");              //获得需要插入/更新增量历史表的数据
+                m_ObjectRowsCount = SetCorrectionData(m_AmmeterDataTable, m_AmmeterFieldArray, m_AmmeterCorrectionDataArray, myStartTime, myEndTime, m_FactoryDataBaseName + ".dbo.HistoryAmmeterIncrement");              //获得需要插入/更新增量历史表的数据
+                m_ObjectRowsCount = m_ObjectRowsCount + SetCorrectionData(m_DCSDataTable, m_DCSFieldArray, m_DCSCorrectionDataArray, myStartTime, myEndTime, m_FactoryDataBaseName + ".dbo.HistoryDCSIncrement");              //获得需要插入/更新增量历史表的数据
                 if (m_ObjectRowsCount > 0)
                 {
                     m_ObjectRowsCount = m_ObjectRowsCount + UpdateHistoryFormulaValue(myOrganizationId, m_FactoryDataBaseName, myStartTime, myEndTime, m_AmmeterFieldArray, m_DCSFieldArray);       //刷新公式历史数据和公式设备历史数据
@@ -543,7 +682,7 @@ namespace BalanceUI.Service
                 return null;
             }
         }
-        private static int SetCorrectionData(DataTable mySourceDataTable, List<string> myCorrectionFieldArray, List<string> myCorrectionDataArray, string myStartTime, string myEndTime, string myAbnormalDataTime, string myFactoryDataTableName)
+        private static int SetCorrectionData(DataTable mySourceDataTable, List<string> myCorrectionFieldArray, List<string> myCorrectionDataArray, string myStartTime, string myEndTime, string myFactoryDataTableName)
         {
             if (mySourceDataTable != null)
             {
@@ -621,32 +760,6 @@ namespace BalanceUI.Service
                     int m_TotalCorrectDataCount = mySourceDataTable.Rows.Count + m_InsertDataTable.Rows.Count;
                     if (m_TotalCorrectDataCount > 0)          //存在需要更新的行
                     {
-                        if (myAbnormalDataTime != "")         //当均摊某列数据不包括在选定的时间内
-                        {
-                            DataRow[] m_ContainDateRow = mySourceDataTable.Select(string.Format("vDate = '{0}'", myAbnormalDataTime));
-                            if (m_ContainDateRow.Length == 0)           //当前时间范围没有包括该行数据,总行数加1
-                            {
-                                m_TotalCorrectDataCount = m_TotalCorrectDataCount + 1;             //总行数加1
-
-                                DataRow m_NewRowTemp = mySourceDataTable.NewRow();
-                                m_NewRowTemp["vDate"] = DateTime.Parse(myAbnormalDataTime);
-                                for (int i = 0; i < myCorrectionDataArray.Count; i++)
-                                {
-                                    //////////需要减去该列所有均摊给其它列的值
-                                    m_NewRowTemp[myCorrectionFieldArray[i]] = decimal.Parse(myCorrectionDataArray[i]) - (decimal.Parse(myCorrectionDataArray[i]) / m_TotalCorrectDataCount) * (m_TotalCorrectDataCount - 1);
-                                }
-                                mySourceDataTable.Rows.Add(m_NewRowTemp);
-                            }
-                            else                                    //当前时间范围包括该行数据,则直接调整数据
-                            {
-                                for (int i = 0; i < myCorrectionDataArray.Count; i++)
-                                {
-                                    //////////需要减去该列所有均摊给其它列的值
-                                    m_ContainDateRow[0][myCorrectionFieldArray[i]] = decimal.Parse(myCorrectionDataArray[i]) - (decimal.Parse(myCorrectionDataArray[i]) / m_TotalCorrectDataCount) * (m_TotalCorrectDataCount - 1);
-                                }
-
-                            }
-                        }
                         for (int i = 0; i < m_InsertDataTable.Rows.Count; i++)
                         {
                             for (int j = 0; j < myCorrectionDataArray.Count; j++)
@@ -658,10 +771,7 @@ namespace BalanceUI.Service
                         {
                             for (int j = 0; j < myCorrectionDataArray.Count; j++)
                             {
-                                if (((DateTime)mySourceDataTable.Rows[i]["vDate"]).ToString("yyyy-MM-dd HH:mm:ss") != myAbnormalDataTime)
-                                {
-                                    mySourceDataTable.Rows[i][myCorrectionFieldArray[j]] = (decimal)mySourceDataTable.Rows[i][myCorrectionFieldArray[j]] + decimal.Parse(myCorrectionDataArray[j]) / m_TotalCorrectDataCount;
-                                }
+                                mySourceDataTable.Rows[i][myCorrectionFieldArray[j]] = decimal.Parse(myCorrectionDataArray[j]) / m_TotalCorrectDataCount;
                             }
                         }
                     }
@@ -850,15 +960,15 @@ namespace BalanceUI.Service
         private static DataTable GetReCaculateHistoryFormulaValue(DataRow[] myFormulaRows, string myDataBaseName, string myTableName, string myStartTime, string myEndTime)
         {
             DataTable m_HistoryFormulaValueTable = new DataTable();
-            m_HistoryFormulaValueTable.Columns.Add("vDate",typeof(DateTime));
-            m_HistoryFormulaValueTable.Columns.Add("OrganizationID",typeof(string));
-            m_HistoryFormulaValueTable.Columns.Add("VariableID",typeof(string));
-            m_HistoryFormulaValueTable.Columns.Add("LevelCode",typeof(string));
-            m_HistoryFormulaValueTable.Columns.Add("FormulaValue",typeof(decimal));
-            m_HistoryFormulaValueTable.Columns.Add("Power",typeof(decimal));
-            m_HistoryFormulaValueTable.Columns.Add("DenominatorValue",typeof(decimal));
-            m_HistoryFormulaValueTable.Columns.Add("CoalDustConsumption",typeof(decimal));
-            m_HistoryFormulaValueTable.Columns.Add("CementTypes",typeof(string));
+            m_HistoryFormulaValueTable.Columns.Add("vDate", typeof(DateTime));
+            m_HistoryFormulaValueTable.Columns.Add("OrganizationID", typeof(string));
+            m_HistoryFormulaValueTable.Columns.Add("VariableID", typeof(string));
+            m_HistoryFormulaValueTable.Columns.Add("LevelCode", typeof(string));
+            m_HistoryFormulaValueTable.Columns.Add("FormulaValue", typeof(decimal));
+            m_HistoryFormulaValueTable.Columns.Add("Power", typeof(decimal));
+            m_HistoryFormulaValueTable.Columns.Add("DenominatorValue", typeof(decimal));
+            m_HistoryFormulaValueTable.Columns.Add("CoalDustConsumption", typeof(decimal));
+            m_HistoryFormulaValueTable.Columns.Add("CementTypes", typeof(string));
 
             DataTable m_TagDataValueTable = GetTagIncrementValue(myStartTime, myEndTime, myDataBaseName);
             DataTable m_TagPowerDataValueTable = GetTagPowerValue(myStartTime, myEndTime, myDataBaseName);
@@ -998,7 +1108,7 @@ namespace BalanceUI.Service
                 if (m_TagDataValueTable != null)
                 {
                     int m_Index = 1;
-                    while(m_Index< m_TagDataValueTable.Columns.Count)
+                    while (m_Index < m_TagDataValueTable.Columns.Count)
                     {
                         if (m_TagDataValueTable.Columns[m_Index].ColumnName.Contains("Energy"))  //删除电量数据
                         {
@@ -1037,7 +1147,7 @@ namespace BalanceUI.Service
                 {
                     try
                     {
-                        m_ReturnValue = (decimal)m_CaculateTable.Compute(m_FormulaString,"");
+                        m_ReturnValue = (decimal)m_CaculateTable.Compute(m_FormulaString, "");
                     }
                     catch
                     {
@@ -1075,16 +1185,17 @@ namespace BalanceUI.Service
                 int m_MonthValue = Int32.Parse(m_GenerateDayTimeList[i].ToString("yyyyMM"));
                 if (m_MonthValue < m_CurentMonthValue)
                 {
-                    if (!m_GenerateMonthTimeList.Contains(DateTime.Parse(m_GenerateDayTimeList[i].ToString("yyyy-MM-01 00:00:00.000"))))
+                    //生成的月报表是生成上一个月的,因此月份加1
+                    if (!m_GenerateMonthTimeList.Contains(DateTime.Parse(m_GenerateDayTimeList[i].ToString("yyyy-MM-01 00:00:00.000")).AddMonths(1)))
                     {
-                        m_GenerateMonthTimeList.Add(DateTime.Parse(m_GenerateDayTimeList[i].ToString("yyyy-MM-01 00:00:00.000")));
+                        m_GenerateMonthTimeList.Add(DateTime.Parse(m_GenerateDayTimeList[i].ToString("yyyy-MM-01 00:00:00.000")).AddMonths(1));
                     }
                 }
             }
-            ////////////////////////////以下是重新生成汇总数据
+            ////////////////////////////以下是重新生成汇总数据////////////////////////
             try
             {
-                
+
                 DeleteBalanceData(myOrganizationId, myStartTime, myEndTime);
                 SingleBasicData singleBasicData = SingleBasicData.Creat();
                 for (int i = 0; i < m_GenerateDayTimeList.Count; i++)         //生成日数据
