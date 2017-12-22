@@ -836,50 +836,57 @@ namespace BalanceUI.Service
         private static int UpdateHistoryFormulaValue(string myOrganizationId, string myDataBaseName, string myStartTime, string myEndTime, List<string> myAmmeterFieldArray, List<string> myDCSFieldArray)
         {
             DataTable m_FormulaTable = GetFormulaInfo(myOrganizationId, myAmmeterFieldArray, myDCSFieldArray);   //获得需要改变值的公式
-            int m_ReturntValue = ReCaculateHistoryFormulaValue(m_FormulaTable.Select("LevelType <> 'MainMachine'"), myDataBaseName, string.Format("{0}.dbo.HistoryFormulaValue", myDataBaseName), myStartTime, myEndTime);
-            //m_ReturntValue = m_ReturntValue + ReCaculateHistoryFormulaValue(m_FormulaTable.Select("LevelType = 'MainMachine'"), myDataBaseName, string.Format("{0}.dbo.HistoryMainMachineFormulaValue", myDataBaseName), myStartTime, myEndTime);
+            int m_ReturntValue = ReCaculateHistoryFormulaValue(m_FormulaTable.Select("LevelType <> 'MainMachine'", "OrganizationId,  LevelCode desc"), myDataBaseName, string.Format("{0}.dbo.HistoryFormulaValue", myDataBaseName), myStartTime, myEndTime);
+            m_ReturntValue = m_ReturntValue + ReCaculateHistoryFormulaValue(m_FormulaTable.Select("LevelType = 'MainMachine'", "OrganizationId,  LevelCode desc"), myDataBaseName, string.Format("{0}.dbo.HistoryMainMachineFormulaValue", myDataBaseName), myStartTime, myEndTime);
             return m_ReturntValue;
         }
         private static DataTable GetFormulaInfo(string myOrganizationId, List<string> myAmmeterFieldArray, List<string> myDCSFieldArray)
         {
-            string m_Sql = @"Select A.OrganizationID as OrganizationId
-                                ,B.VariableId as VariableId
-                                ,B.LevelCode as LevelCode
-                                ,B.LevelType as LevelType
-                                ,B.Formula as Formula
-                                ,B.Denominator as Denominator
-                                ,B.CoalDustConsumption as CoalDustConsumption
-                                from tz_Formula A, formula_FormulaDetail B, system_Organization C, system_Organization D
-                                where A.OrganizationID = C.OrganizationID
-                                and A.ENABLE = 1
-                                and A.State = 0
-                                and A.KeyID = B.KeyID
-                                and B.SaveToHistory = 1
-                                and D.OrganizationID = '{0}'
-                                and C.LevelCode like D.LevelCode + '%'
-                                {1}
-                                order by B.LevelCode";
-            string m_DataTags = "";
+            string m_Sql = @"Select M.VariableId, Z.OrganizationID as OrganizationId, M.LevelCode, M.LevelType, M.Formula, M.Denominator, M.CoalDustConsumption
+                                from formula_FormulaDetail M, tz_Formula Z,
+                                    (Select A.OrganizationID as OrganizationId
+                                            ,A.KeyID
+                                            ,B.VariableId as VariableId
+                                            ,B.LevelCode as LevelCode
+                                            ,B.LevelType as LevelType
+                                            ,B.Formula as Formula
+                                            ,B.Denominator as Denominator
+                                            ,B.CoalDustConsumption as CoalDustConsumption
+                                            from tz_Formula A, formula_FormulaDetail B, system_Organization C, system_Organization D
+                                            where A.OrganizationID = C.OrganizationID
+                                            and A.ENABLE = 1
+                                            and A.State = 0
+                                            and A.KeyID = B.KeyID
+                                            and B.SaveToHistory = 1
+                                            and D.OrganizationID = '{0}'
+                                            and C.LevelCode like D.LevelCode + '%'
+                                            {1}) N
+								where Z.KeyID = M.KeyID
+								and (CHARINDEX(N.LevelCode, M.Formula) > 0 and N.OrganizationId = '{0}'
+								or (CHARINDEX(M.LevelCode, N.LevelCode) > 0 and M.KeyID = N.KeyID))
+								group by M.VariableId, Z.OrganizationId, M.LevelCode, M.LevelType, M.Formula, M.Denominator, M.CoalDustConsumption
+                                order by Z.OrganizationId,  M.LevelCode desc";
+                                            string m_DataTags = "";
             for (int i = 0; i < myAmmeterFieldArray.Count; i++)
             {
                 if (m_DataTags == "")
                 {
-                    m_DataTags = string.Format(" and (B.Formula like '%{0}%' or B.Denominator like '%{0}%' or B.Denominator like '%{0}%' ", myAmmeterFieldArray[i].Replace("Energy", ""));
+                    m_DataTags = string.Format(" and (B.Formula like '%{0}%' or B.Denominator like '%{0}%' ", myAmmeterFieldArray[i].Replace("Energy", ""));
                 }
                 else
                 {
-                    m_DataTags = m_DataTags + string.Format(" or B.Formula like '%{0}%' or B.Denominator like '%{0}%' or B.Denominator like '%{0}%' ", myAmmeterFieldArray[i].Replace("Energy", ""));
+                    m_DataTags = m_DataTags + string.Format(" or B.Formula like '%{0}%' or B.Denominator like '%{0}%' ", myAmmeterFieldArray[i].Replace("Energy", ""));
                 }
             }
             for (int i = 0; i < myDCSFieldArray.Count; i++)
             {
                 if (m_DataTags == "")
                 {
-                    m_DataTags = string.Format(" and (B.Formula like '%{0}%' or B.Denominator like '%{0}%' or B.Denominator like '%{0}%' ", myDCSFieldArray[i]);
+                    m_DataTags = string.Format(" and (B.Formula like '%{0}%' or B.Denominator like '%{0}%' ", myDCSFieldArray[i]);
                 }
                 else
                 {
-                    m_DataTags = m_DataTags + string.Format(" or B.Formula like '%{0}%' or B.Denominator like '%{0}%' or B.Denominator like '%{0}%' ", myDCSFieldArray[i]);
+                    m_DataTags = m_DataTags + string.Format(" or B.Formula like '%{0}%' or B.Denominator like '%{0}%' ", myDCSFieldArray[i]);
                 }
             }
             if (m_DataTags == "")
@@ -959,6 +966,11 @@ namespace BalanceUI.Service
         }
         private static DataTable GetReCaculateHistoryFormulaValue(DataRow[] myFormulaRows, string myDataBaseName, string myTableName, string myStartTime, string myEndTime)
         {
+            Dictionary<string, decimal> m_UpperProcessFormulaElectricityDic = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> m_UpperProcessFormulaPowerDic = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> m_UpperProcessFormulaDCSDic = new Dictionary<string, decimal>();
+            
+
             DataTable m_HistoryFormulaValueTable = new DataTable();
             m_HistoryFormulaValueTable.Columns.Add("vDate", typeof(DateTime));
             m_HistoryFormulaValueTable.Columns.Add("OrganizationID", typeof(string));
@@ -1019,12 +1031,12 @@ namespace BalanceUI.Service
                         m_NewRowTemp["LevelCode"] = myFormulaRows[j]["LevelCode"];
                         if (myFormulaRows[j]["Formula"] != DBNull.Value)
                         {
-                            m_NewRowTemp["FormulaValue"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], myFormulaRows[j]["Formula"].ToString(), m_FormulaFactors[j]);
+                            m_NewRowTemp["FormulaValue"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], ref m_UpperProcessFormulaElectricityDic, myFormulaRows[j]["Formula"].ToString(), m_FormulaFactors[j], m_NewRowTemp["LevelCode"].ToString());
 
                             DataRow[] m_TagPowerRows = m_TagPowerDataValueTable.Select(string.Format("vDate = '{0}'", ((DateTime)m_NewRowTemp["vDate"]).ToString("yyyy-MM-dd HH:mm:ss")));
                             if (m_TagPowerRows.Length > 0)
                             {
-                                m_NewRowTemp["Power"] = CaculateFormulaValue(m_TagPowerRows[0], myFormulaRows[j]["Formula"].ToString(), m_FormulaFactors[j]);
+                                m_NewRowTemp["Power"] = CaculateFormulaValue(m_TagPowerRows[0], ref m_UpperProcessFormulaPowerDic, myFormulaRows[j]["Formula"].ToString(), m_FormulaFactors[j], m_NewRowTemp["LevelCode"].ToString());
                             }
                             else
                             {
@@ -1038,7 +1050,7 @@ namespace BalanceUI.Service
                         }
                         if (myFormulaRows[j]["Denominator"] != DBNull.Value)
                         {
-                            m_NewRowTemp["DenominatorValue"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], myFormulaRows[j]["Denominator"].ToString(), m_DenominatorFactors[j]);
+                            m_NewRowTemp["DenominatorValue"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], ref m_UpperProcessFormulaDCSDic, myFormulaRows[j]["Denominator"].ToString(), m_DenominatorFactors[j], m_NewRowTemp["LevelCode"].ToString());
                         }
                         else
                         {
@@ -1046,7 +1058,7 @@ namespace BalanceUI.Service
                         }
                         if (myFormulaRows[j]["CoalDustConsumption"] != DBNull.Value)
                         {
-                            m_NewRowTemp["CoalDustConsumption"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], myFormulaRows[j]["CoalDustConsumption"].ToString(), m_CoalDustFactors[j]);
+                            m_NewRowTemp["CoalDustConsumption"] = CaculateFormulaValue(m_TagDataValueTable.Rows[i], ref m_UpperProcessFormulaDCSDic, myFormulaRows[j]["CoalDustConsumption"].ToString(), m_CoalDustFactors[j], m_NewRowTemp["LevelCode"].ToString());
                         }
                         else
                         {
@@ -1062,9 +1074,9 @@ namespace BalanceUI.Service
         private static DataTable GetTagIncrementValue(string myStartTime, string myEndTime, string myDataBaseName)
         {
             string m_Sql = @"Select A.*, B.* 
-                             from {0}.dbo.HistoryAmmeterIncrement A, {0}.dbo.HistoryDCSIncrement B 
-                             where A.vDate = B.vDate
-                             and A.vDate >= '{1}' 
+                             from {0}.dbo.HistoryAmmeterIncrement A
+                             left join {0}.dbo.HistoryDCSIncrement B on  A.vDate = B.vDate
+                             where A.vDate >= '{1}' 
                              and A.vDate <= '{2}'
                              order by A.vDate";
             m_Sql = string.Format(m_Sql, myDataBaseName, myStartTime, myEndTime);
@@ -1096,8 +1108,9 @@ namespace BalanceUI.Service
         }
         private static DataTable GetTagPowerValue(string myStartTime, string myEndTime, string myDataBaseName)
         {
-            string m_Sql = @"Select A.* 
+            string m_Sql = @"Select A.*, B.*
                              from {0}.dbo.HistoryAmmeter A
+                                left join {0}.dbo.HistoryDCSIncrement B on  A.vDate = B.vDate
                              where A.vDate >= '{1}' 
                              and A.vDate <= '{2}'
                              order by A.vDate";
@@ -1128,7 +1141,7 @@ namespace BalanceUI.Service
                 return null;
             }
         }
-        private static decimal CaculateFormulaValue(DataRow myTagDataValueRow, string myFormulaString, string[] myCaculateFactors)
+        private static decimal CaculateFormulaValue(DataRow myTagDataValueRow, ref Dictionary<string, decimal> myUpperProcessFormulaValueDic, string myFormulaString, string[] myCaculateFactors, string myLevelCode)
         {
             DataTable m_CaculateTable = new DataTable();
             decimal m_ReturnValue = 0.0m;
@@ -1139,6 +1152,10 @@ namespace BalanceUI.Service
                 {
                     m_FormulaString = m_FormulaString.Replace(myCaculateFactors[i], myTagDataValueRow[myCaculateFactors[i]].ToString());
                 }
+                else if (myUpperProcessFormulaValueDic.ContainsKey(myCaculateFactors[i]))
+                {
+                    m_FormulaString = m_FormulaString.Replace(myCaculateFactors[i], myUpperProcessFormulaValueDic[myCaculateFactors[i]].ToString());
+                }
                 else
                 {
                     break;
@@ -1148,6 +1165,14 @@ namespace BalanceUI.Service
                     try
                     {
                         m_ReturnValue = (decimal)m_CaculateTable.Compute(m_FormulaString, "");
+                        if (myUpperProcessFormulaValueDic.ContainsKey(myLevelCode))
+                        {
+                            myUpperProcessFormulaValueDic[myLevelCode] = m_ReturnValue;
+                        }
+                        else
+                        {
+                            myUpperProcessFormulaValueDic.Add(myLevelCode, m_ReturnValue);
+                        }
                     }
                     catch
                     {

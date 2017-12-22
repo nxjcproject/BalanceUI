@@ -21,7 +21,6 @@ namespace BalanceUI.Service.BalanceService
         }
         #region
         //        private static DataTable GetMaterialInformation(string OrganizationId)//获取物料信息
-<<<<<<< HEAD
         //        {
         //            string connectionString = ConnectionStringFactory.NXJCConnectionString;
         //            ISqlServerDataFactory dataFactory = new SqlServerDataFactory(connectionString);
@@ -44,30 +43,6 @@ namespace BalanceUI.Service.BalanceService
         //            SqlParameter myParameter = new SqlParameter("OrganizationID", OrganizationId);
         //            DataTable table = dataFactory.Query(mySql, myParameter);
         //            return table;
-=======
-//        {
-//            string connectionString = ConnectionStringFactory.NXJCConnectionString;
-//            ISqlServerDataFactory dataFactory = new SqlServerDataFactory(connectionString);
-//            string mySql = @"select 
-//       A.Id
-//      ,A.Name
-//      ,A.MaterialId
-//      ,A.levelcode
-//      ,B.[WarehouseId]
-//      ,B.[VariableId]
-//      ,B.[Specs]
-//      ,B.[DataBaseName]
-//      ,B.[DataTableName]
-//      ,B.[WarehousingType]
-//      ,C.[Process]
-//      ,C.[MaterialFormula]
-//      ,C.[MaterialFormulaProcess]
-//      ,C.[DisplayIndex],C.[VariableType] from [NXJC].[dbo].[inventory_Warehouse] as A,[NXJC].[dbo].[inventory_WareHousingContrast] as B,[NXJC].[dbo].[report_MaterialBalanceReport] as C
-//                  where A.Id=B.warehouseid and A.[OrganizationID]=@OrganizationID and C.keyid=B.[ItemId] order by DisplayIndex, process,WarehouseId";
-//            SqlParameter myParameter = new SqlParameter("OrganizationID", OrganizationId);
-//            DataTable table = dataFactory.Query(mySql, myParameter);
-//            return table;
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         //        }
         #endregion
         private static DataTable GetmaterialInformationData(string OrganizationId, DataTable processInformaion, string startTime, string endTime)//获取物料信息数据
@@ -75,11 +50,7 @@ namespace BalanceUI.Service.BalanceService
             string process = "";//工序
             string WarehouseID = "";//厂库ID
             string WarehouseName = "";//厂库名字
-<<<<<<< HEAD
             string VariableType = "";//用于判断是否为分品种
-=======
-            string VariableType="";//用于判断是否为分品种
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
             Decimal[] processInputData = new Decimal[3];
             Decimal[] processOutputData = new Decimal[3];
             Decimal[] inputData = new Decimal[3];
@@ -111,13 +82,8 @@ namespace BalanceUI.Service.BalanceService
             //string process_endTime = "";
             string inputWaterData = "";//计算水分时用
             string outputWaterData = "";//计算水分时用
-<<<<<<< HEAD
             string inputWaterNumber = null;//消耗水分值
             string outputWaterNumber = null;//产量水分值
-=======
-            string inputWaterNumber =null;//消耗水分值
-            string outputWaterNumber =null;//产量水分值
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
             string dryBasis = null;//干基
             string databaseName = GetDataBaseName(OrganizationId);
             resultDatatable.Columns.Add("Process", Type.GetType("System.String"));
@@ -134,24 +100,15 @@ namespace BalanceUI.Service.BalanceService
             resultDatatable.Columns.Add("Yield", Type.GetType("System.String"));
             resultDatatable.Columns.Add("ProductMoisture", Type.GetType("System.String"));
             DataTable waterInformation = GetWaterInformation(OrganizationId);
-<<<<<<< HEAD
             Dictionary<string, string> dlc = GetWaterData(waterInformation, OrganizationId, startTime, endTime);
-=======
-            Dictionary<string, string> dlc = GetWaterData(waterInformation, OrganizationId,startTime,endTime);
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
             foreach (DataRow dr in processInformaion.Rows)
             {
                 DataRow m_dr = resultDatatable.NewRow();
                 WarehouseID = dr["WarehouseId"].ToString();
                 WarehouseName = dr["Name"].ToString();
                 process = dr["Process"].ToString();
-<<<<<<< HEAD
                 VariableType = dr["VariableType"].ToString();
                 if (VariableType == "") //正常工序时
-=======
-                VariableType=dr["VariableType"].ToString();
-                if (VariableType=="") //正常工序时
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 {
                     getBenchmarksInformationTable = GetBenchmarksInformation(startTime, WarehouseID);
                     try
@@ -186,7 +143,6 @@ namespace BalanceUI.Service.BalanceService
                     getOutputWarehouseTable = GetOutputWarehouse(WarehouseID);//出库信息
                     getProcessInputWarehouseTable = GetProcessInputWarehouse(WarehouseID, process);//获取分工序入库信息
                     inputData = GetInputQuantity(endTime, benchmarksTime, OrganizationId, getInputWarehouseTable, databaseName);//入库数据
-<<<<<<< HEAD
                     inputQuantity = Math.Round(inputData[0], 2);//入库量
                     inputTotal = Math.Round(inputData[1], 2);//分品种入厂总和
                     getProcessOutputWarehouseTable = GetProcessOutputWarehouse(WarehouseID, process);//获取分工序出库信息
@@ -197,18 +153,6 @@ namespace BalanceUI.Service.BalanceService
                     currentInventory = Math.Round(currentInventory, 2);
                     processInputData = GetInputQuantity(endTime, startTime, OrganizationId, getProcessInputWarehouseTable, databaseName);//分工序入库数据
                     processInputQuantity = Math.Round(processInputData[0], 2);//分工序入库量
-=======
-                    inputQuantity = Math.Round(inputData[0],2);//入库量
-                    inputTotal = Math.Round(inputData[1],2);//分品种入厂总和
-                    getProcessOutputWarehouseTable = GetProcessOutputWarehouse(WarehouseID, process);//获取分工序出库信息
-                    outputData = GetInputQuantity(endTime, benchmarksTime, OrganizationId, getOutputWarehouseTable, databaseName);//出库数据
-                    outputQuantity = Math.Round(outputData[0],2);//出库量
-                    outputTotal = Math.Round(outputData[1],2);//分品种出厂总和
-                    currentInventory = benchmarksValue + inputQuantity - outputQuantity;//当前库存
-                    currentInventory = Math.Round(currentInventory, 2);
-                    processInputData = GetInputQuantity(endTime, startTime, OrganizationId, getProcessInputWarehouseTable, databaseName);//分工序入库数据
-                    processInputQuantity = Math.Round( processInputData[0],2);//分工序入库量
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                     if (processInputData[3] != 0)
                     {
                         inputFactory = Convert.ToDecimal(processInputData[1]).ToString("0.00");//入厂量
@@ -227,11 +171,7 @@ namespace BalanceUI.Service.BalanceService
                         {
                             Production = "/";
                         }
-<<<<<<< HEAD
 
-=======
-                       
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                     }
                     else
                     {
@@ -265,13 +205,8 @@ namespace BalanceUI.Service.BalanceService
                     inputWaterData = process + WarehouseName + "Input";
                     try
                     {
-<<<<<<< HEAD
                         inputWaterNumber = Convert.ToDecimal(dlc[inputWaterData]).ToString("0.00");
                         dryBasis = (Convert.ToDecimal(Consumption) * (1 - Convert.ToDecimal(dlc[inputWaterData]) / 100)).ToString("#0.00");
-=======
-                        inputWaterNumber =Convert.ToDecimal( dlc[inputWaterData]).ToString("0.00");
-                        dryBasis = (Convert.ToDecimal( Consumption) * (1-Convert.ToDecimal(dlc[inputWaterData])/100)).ToString("#0.00");
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                     }
                     catch
                     {
@@ -294,11 +229,7 @@ namespace BalanceUI.Service.BalanceService
                     else
                     {
                         m_dr["MaterialName"] = WarehouseName.Remove(WarehouseName.Length - 1, 1);
-<<<<<<< HEAD
 
-=======
- 
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                     }
                     m_dr["Process"] = process;
                     m_dr["Earlyinventory"] = benchmarksValue.ToString();
@@ -317,11 +248,7 @@ namespace BalanceUI.Service.BalanceService
                     Array.Clear(processOutputData, 0, processOutputData.Length);
 
                 }
-<<<<<<< HEAD
                 else//当为分品种工序时
-=======
-               else//当为分品种工序时
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 {
                     if (process == WarehouseName)//当为分品种工序水泥库时
                     {
@@ -365,11 +292,7 @@ namespace BalanceUI.Service.BalanceService
                         currentInventory = benchmarksValue + inputQuantity - outputQuantity;//当前库存
                         currentInventory = Math.Round(currentInventory, 2);
                         ProcessInputCementTable = GetProcessInputInformation(endTime, startTime, OrganizationId, WarehouseName);//分工序水泥子库信息
-<<<<<<< HEAD
                         Production = Convert.ToDecimal(GetProcessQuantity(ProcessInputCementTable, startTime, endTime)).ToString("0.00");//生产量
-=======
-                        Production = Convert.ToDecimal( GetProcessQuantity(ProcessInputCementTable,startTime,endTime)).ToString("0.00");//生产量
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                         Consumption = "/";//消耗量
                         inputWaterData = process + WarehouseName + "Input";
                         try
@@ -469,11 +392,7 @@ namespace BalanceUI.Service.BalanceService
                         try
                         {
                             inputWaterNumber = Convert.ToDecimal(dlc[inputWaterData]).ToString("0.00");
-<<<<<<< HEAD
                             dryBasis = (Convert.ToDecimal(Consumption) * (1 - Convert.ToDecimal(dlc[inputWaterData]) / 100)).ToString("#0.00");
-=======
-                            dryBasis = (Convert.ToDecimal( Consumption) * (1 - Convert.ToDecimal(dlc[inputWaterData]) / 100)).ToString("#0.00");
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                         }
                         catch
                         {
@@ -596,11 +515,7 @@ namespace BalanceUI.Service.BalanceService
             return table;
         }
         //出入库量计算
-<<<<<<< HEAD
         private static Decimal[] GetInputQuantity(string endTime, string BenchmarksTime, string organizationID, DataTable InputWarehouse, string databaseName)
-=======
-        private static Decimal[] GetInputQuantity(string endTime, string BenchmarksTime, string organizationID, DataTable InputWarehouse,string databaseName)
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         {
             int inputMark = 0;//入厂量标志
             int consumptionMark = 0;//消耗量标志
@@ -646,7 +561,6 @@ namespace BalanceUI.Service.BalanceService
                 else if (dataTableName == "VWB_WeightNYGL")
                 {
                     inputMark++;
-<<<<<<< HEAD
                     if (specsName == "")
                     {
                         string connectionString = ConnectionStringFactory.NXJCConnectionString;
@@ -690,51 +604,6 @@ namespace BalanceUI.Service.BalanceService
 
                     }
                 }
-=======
-                        if (specsName == "")
-                        {   
-                                string connectionString = ConnectionStringFactory.NXJCConnectionString;
-                                ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
-                                string mySql = @"select sum(Value) as InputSigle from [dbo].[VWB_WeightNYGL] 
-                                       where @BenchmarksTime<StatisticalTime and StatisticalTime<@startTime and OrganizationID=@OrganizationID and VariableId=@VariableId
-                                      ";
-                                SqlParameter[] myParameter = { new SqlParameter("@startTime", endTime), new SqlParameter("@BenchmarksTime", BenchmarksTime), new SqlParameter("@OrganizationID", organizationID), new SqlParameter("@VariableId", variableIdName) };
-                                DataTable table = dataFactoryNew.Query(mySql, myParameter);
-                                try
-                                {
-                                    inputSigleNygl = Convert.ToDecimal(table.Rows[0][0]) * Convert.ToDecimal(multiple) + Convert.ToDecimal(offset);
-                                }
-                                catch
-                                {
-                                    inputSigleNygl = 0;
-                                }
-                                inputNygl = inputNygl + inputSigleNygl;
-                                inputWeighbridge = inputWeighbridge + inputSigleNygl;
-
-                        }  
-                            else
-                            {
-                                string connectionString = ConnectionStringFactory.NXJCConnectionString;
-                                ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
-                                string mySql = @"select sum(Value) as InputSigle from [dbo].[VWB_WeightNYGL] 
-                                       where @BenchmarksTime<StatisticalTime and StatisticalTime<@startTime and OrganizationID=@OrganizationID and VariableId=@VariableId  and [VariableSpecs]=@specsName
-                                      ";
-                                SqlParameter[] myParameter = { new SqlParameter("@startTime", endTime), new SqlParameter("@BenchmarksTime", BenchmarksTime), new SqlParameter("@OrganizationID", organizationID), new SqlParameter("@VariableId", variableIdName), new SqlParameter("@specsName", specsName) };
-                                DataTable table = dataFactoryNew.Query(mySql, myParameter);
-                                try
-                                {
-                                    inputSigleNygl = Convert.ToDecimal(table.Rows[0][0]) * Convert.ToDecimal(multiple) + Convert.ToDecimal(offset);
-                                }
-                                catch
-                                {
-                                    inputSigleNygl = 0;
-                                }
-                                    inputNygl = inputNygl + inputSigleNygl;
-                                    inputWeighbridge = inputWeighbridge + inputSigleNygl;
-                                
-                            }
-                        }
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 else if (dataTableName == "HistoryDCSIncrement")
                 {
                     consumptionMark++;
@@ -744,7 +613,6 @@ namespace BalanceUI.Service.BalanceService
                                        where @BenchmarksTime<[vDate] and [vDate]<@startTime";
                     SqlParameter[] myParameter = { new SqlParameter("@startTime", endTime), new SqlParameter("@BenchmarksTime", BenchmarksTime) };
                     DataTable table = dataFactoryNew.Query(string.Format(mySql, variableIdName, databaseName), myParameter);
-<<<<<<< HEAD
                     try
                     {
                         inputSigleNygl = Convert.ToDecimal(table.Rows[0][0]) * Convert.ToDecimal(multiple) + Convert.ToDecimal(offset);
@@ -756,30 +624,13 @@ namespace BalanceUI.Service.BalanceService
                     inputNygl = inputNygl + inputSigleNygl;
                     inputConsumption = inputConsumption + inputSigleNygl;
 
-=======
-                        try
-                        {
-                            inputSigleNygl = Convert.ToDecimal(table.Rows[0][0]) * Convert.ToDecimal(multiple) + Convert.ToDecimal(offset);
-                        }
-                        catch
-                        {
-                            inputSigleNygl = 0;
-                        }
-                        inputNygl = inputNygl + inputSigleNygl;
-                        inputConsumption = inputConsumption + inputSigleNygl;
-                    
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 }
             }
             inputNygl = Math.Round(inputNygl, 2);
             inputNyglTotal[0] = inputNygl;
             inputNyglTotal[1] = inputWeighbridge;
             inputNyglTotal[2] = inputConsumption;
-<<<<<<< HEAD
             inputNyglTotal[3] = inputMark;
-=======
-            inputNyglTotal[3]=inputMark;
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
             inputNyglTotal[4] = consumptionMark;
             return inputNyglTotal;
         }
@@ -803,19 +654,11 @@ namespace BalanceUI.Service.BalanceService
             string mySql = @"select C.VariableId,C.specs,C.DataTableName,C.WarehouseId,C.WarehousingType,C.Multiple,C.Offset,D.[OrganizationID] from      (
                      select A.VariableId,A.specs,A.DataTableName,A.WarehouseId,A.WarehousingType,A.Multiple,A.Offset from NXJC.[dbo].[inventory_WareHousingContrast]  as A  ,[NXJC].[dbo].[report_MaterialBalanceReport] as B
                                        where A.WarehouseId=@WarehouseName and A.WarehousingType='output'and B.Process=@process and A.ItemId=B.KeyId) as C left join {0}.[dbo].[View_DCSContrast] as D on C.VariableId=D.[CumulantName]";
-<<<<<<< HEAD
             SqlParameter[] myParameter = { new SqlParameter("@process", process), new SqlParameter("@WarehouseName", WarehouseName) };
             DataTable table = dataFactoryNew.Query(string.Format(mySql, databasename), myParameter);
             return table;
         }
         private static Decimal GetConsumption(DataTable ConsumptionInformation, DataTable ProcessInputInformation, string databasename, string endTime)//计算消耗量
-=======
-            SqlParameter[] myParameter = {new SqlParameter("@process", process), new SqlParameter("@WarehouseName", WarehouseName) };
-            DataTable table = dataFactoryNew.Query(string.Format(mySql, databasename), myParameter);
-            return table;
-        }
-        private static Decimal GetConsumption(DataTable ConsumptionInformation, DataTable ProcessInputInformation, string databasename,string endTime)//计算消耗量
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         {
             Decimal inputNygl = 0;
             foreach (DataRow dr in ProcessInputInformation.Rows)
@@ -860,11 +703,7 @@ namespace BalanceUI.Service.BalanceService
             }
             return inputNygl;
         }
-<<<<<<< HEAD
         private static Decimal GetProcessQuantity(DataTable ProcessInputCementTable, string starttime, string endtime)
-=======
-        private static Decimal GetProcessQuantity(DataTable ProcessInputCementTable,string starttime, string endtime)
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         {
             Decimal input = 0;
             Decimal inputTotal = 0;
@@ -880,13 +719,8 @@ namespace BalanceUI.Service.BalanceService
                 {
                     changeEndtime = endtime;
                 }
-<<<<<<< HEAD
 
 
-=======
- 
-                
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 string connectionString = ConnectionStringFactory.NXJCConnectionString;
                 ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
                 string mySql = @"select sum({0}) as InputSigle from {1}.[dbo].[HistoryDCSIncrement]
@@ -907,11 +741,7 @@ namespace BalanceUI.Service.BalanceService
             return inputTotal;
         }
 
-<<<<<<< HEAD
         private static DataTable GetFormula(DataTable materialInformationData)
-=======
-         private static DataTable GetFormula(DataTable materialInformationData)
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         {
             DataTable resultTable = new DataTable();
             resultTable.Columns.Add("Process", Type.GetType("System.String"));
@@ -930,17 +760,10 @@ namespace BalanceUI.Service.BalanceService
             Dictionary<string, Decimal> dlc = new Dictionary<string, decimal>();
             Decimal ratioData = 0;//用于计算各工序物料消耗量
             Decimal ratioDataTotal = 0;//用于计算各工序物料消耗量之和
-<<<<<<< HEAD
             int countNumber = materialInformationData.Rows.Count;
             string matarialName = "";
             string processName = materialInformationData.Rows[0]["Process"].ToString();
             for (int i = 0; i <= countNumber - 1; i++)
-=======
-             int countNumber=materialInformationData.Rows.Count;
-             string matarialName = "";
-            string processName = materialInformationData.Rows[0]["Process"].ToString();
-            for (int i = 0; i <= countNumber-1; i++)
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
             {
                 DataRow st = materialInformationData.Rows[i];
                 if (processName == st["Process"].ToString())
@@ -972,11 +795,7 @@ namespace BalanceUI.Service.BalanceService
                     ratioDataTotal = ratioDataTotal + ratioData;
                     processName = st["Process"].ToString();
                 }
-<<<<<<< HEAD
                 if (i == countNumber - 1)
-=======
-                if (i == countNumber-1)
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 {
                     dlc.Add(processName, ratioDataTotal);
                 }
@@ -985,17 +804,10 @@ namespace BalanceUI.Service.BalanceService
             foreach (DataRow dr in materialInformationData.Rows)
             {
                 DataRow m_dr = resultTable.NewRow();
-<<<<<<< HEAD
                 processName = dr["Process"].ToString();
                 matarialName = dr["MaterialName"].ToString();
                 ratioData = dlc[processName];
                 if (processName == "生料" || processName == "燃料" || processName == "熟料")
-=======
-                processName=dr["Process"].ToString();
-                matarialName = dr["MaterialName"].ToString();
-                ratioData = dlc[processName];
-                if (processName == "生料" || processName =="燃料" || processName=="熟料")
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 {
                     m_dr["Process"] = dr["Process"];
                     m_dr["MaterialName"] = dr["MaterialName"];
@@ -1015,7 +827,6 @@ namespace BalanceUI.Service.BalanceService
                 }
                 if (ratioData == 0)
                 {
-<<<<<<< HEAD
                     m_dr["Process"] = dr["Process"];
                     m_dr["MaterialName"] = dr["MaterialName"];
                     m_dr["Earlyinventory"] = dr["Earlyinventory"];
@@ -1023,15 +834,6 @@ namespace BalanceUI.Service.BalanceService
                     m_dr["Moisture"] = dr["Moisture"];
                     m_dr["Output"] = dr["Output"];
                     m_dr["DynamicInventory"] = dr["DynamicInventory"];
-=======
-                    m_dr["Process"] =dr["Process"];
-                    m_dr["MaterialName"] =dr["MaterialName"];
-                    m_dr["Earlyinventory"] =dr["Earlyinventory"];
-                    m_dr["Input"] =dr["Input"];
-                    m_dr["Moisture"] =dr["Moisture"];
-                    m_dr["Output"] =dr["Output"];
-                    m_dr["DynamicInventory"] =dr["DynamicInventory"];
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                     m_dr["Ratio"] = null;
                     m_dr["Formula"] = "0";
                     m_dr["WetBase"] = dr["WetBase"];
@@ -1066,11 +868,7 @@ namespace BalanceUI.Service.BalanceService
                 m_dr["Moisture"] = dr["Moisture"];
                 m_dr["Output"] = dr["Output"];
                 m_dr["DynamicInventory"] = dr["DynamicInventory"];
-<<<<<<< HEAD
                 m_dr["Ratio"] = null;
-=======
-                m_dr["Ratio"] =null;
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
                 try
                 {
                     m_dr["Formula"] = Math.Round(Convert.ToDecimal(dr["WetBase"]) / ratioData, 2).ToString("0.00");
@@ -1087,7 +885,6 @@ namespace BalanceUI.Service.BalanceService
             }
             return resultTable;
         }
-<<<<<<< HEAD
         private static DataTable GetRatio(DataTable tableInformation)
         {
             DataTable resultTable = new DataTable();
@@ -1248,154 +1045,6 @@ namespace BalanceUI.Service.BalanceService
             }
             return dlc;
         }
-=======
-         private static DataTable GetRatio(DataTable tableInformation)
-         {
-             DataTable resultTable = new DataTable();
-             resultTable.Columns.Add("Process", Type.GetType("System.String"));
-             resultTable.Columns.Add("MaterialName", Type.GetType("System.String"));
-             resultTable.Columns.Add("Earlyinventory", Type.GetType("System.String"));
-             resultTable.Columns.Add("Input", Type.GetType("System.String"));
-             resultTable.Columns.Add("Moisture", Type.GetType("System.String"));
-             resultTable.Columns.Add("Output", Type.GetType("System.String"));
-             resultTable.Columns.Add("DynamicInventory", Type.GetType("System.String"));
-             resultTable.Columns.Add("Ratio", Type.GetType("System.String"));
-             resultTable.Columns.Add("WetBase", Type.GetType("System.String"));
-             resultTable.Columns.Add("DryBasis", Type.GetType("System.String"));
-             resultTable.Columns.Add("Formula", Type.GetType("System.String"));
-             resultTable.Columns.Add("Yield", Type.GetType("System.String"));
-             resultTable.Columns.Add("ProductMoisture", Type.GetType("System.String"));
-             Dictionary<string, string> dll = new Dictionary<string, string>();
-             Decimal rawMaterial = 0;
-             foreach (DataRow sr in tableInformation.Rows)
-             {
-                 if (sr[0].ToString() == "原料")
-                 {
-                     rawMaterial = rawMaterial + Convert.ToDecimal(sr["WetBase"]);
-                     continue;
-                 }
-             }
-             dll.Add("生料消耗量", rawMaterial.ToString());
-             foreach (DataRow dr in tableInformation.Rows)
-             {
-                
-                 if (dr[0].ToString() == "熟料" && dr[1].ToString() == "熟料")
-                 {
-                     dll.Add("熟料产量", dr["Yield"].ToString());
-                     continue;
-                 }
-                 if (dr[0].ToString() == "水泥" && dr[1].ToString() == "水泥")
-                 {
-                     dll.Add("水泥产量", dr["Yield"].ToString());
-                     continue;
-                 }
-                 if (dr[0].ToString() == "水泥" && dr[1].ToString() == "熟料")
-                 {
-                     dll.Add("熟料消耗量", dr["WetBase"].ToString());
-                     continue;
-                 }
-               
-             }
-             foreach (DataRow st in tableInformation.Rows)
-             {
-                 DataRow m_dr = resultTable.NewRow();
-                 if (st[0].ToString() == "熟料" && st[1].ToString() == "熟料")
-                 {
-                     m_dr["Process"] = st["Process"];
-                     m_dr["MaterialName"] = st["MaterialName"];
-                     m_dr["Earlyinventory"] = st["Earlyinventory"];
-                     m_dr["Input"] = st["Input"];
-                     m_dr["Moisture"] = st["Moisture"];
-                     m_dr["Output"] = st["Output"];
-                     m_dr["DynamicInventory"] = st["DynamicInventory"];
-                     m_dr["Ratio"] = (Convert.ToDecimal(dll["熟料产量"])/Convert.ToDecimal( dll["生料消耗量"])).ToString("0.00");
-                     m_dr["Formula"] = st["Formula"];
-                     m_dr["WetBase"] = st["WetBase"];
-                     m_dr["DryBasis"] = st["DryBasis"];
-                     m_dr["Yield"] = st["Yield"];
-                     m_dr["ProductMoisture"] = st["ProductMoisture"];
-                     resultTable.Rows.Add(m_dr);
-                     continue;
-                    
-                 }
-                 else if (st[0].ToString() == "水泥" && st[1].ToString() == "水泥")
-                 {
-                     m_dr["Process"] = st["Process"];
-                     m_dr["MaterialName"] = st["MaterialName"];
-                     m_dr["Earlyinventory"] = st["Earlyinventory"];
-                     m_dr["Input"] = st["Input"];
-                     m_dr["Moisture"] = st["Moisture"];
-                     m_dr["Output"] = st["Output"];
-                     m_dr["DynamicInventory"] = st["DynamicInventory"];
-                     m_dr["Ratio"] = (Convert.ToDecimal(dll["熟料消耗量"])/Convert.ToDecimal(dll["水泥产量"]) ).ToString("0.00");
-                     m_dr["Formula"] = st["Formula"];
-                     m_dr["WetBase"] = st["WetBase"];
-                     m_dr["DryBasis"] = st["DryBasis"];
-                     m_dr["Yield"] = st["Yield"];
-                     m_dr["ProductMoisture"] = st["ProductMoisture"];
-                     resultTable.Rows.Add(m_dr);
-                     continue;
-                 }
-                 else
-                 {
-                     m_dr["Process"] = st["Process"];
-                     m_dr["MaterialName"] = st["MaterialName"];
-                     m_dr["Earlyinventory"] = st["Earlyinventory"];
-                     m_dr["Input"] = st["Input"];
-                     m_dr["Moisture"] = st["Moisture"];
-                     m_dr["Output"] = st["Output"];
-                     m_dr["DynamicInventory"] = st["DynamicInventory"];
-                     m_dr["Ratio"] ="/";
-                     m_dr["Formula"] = st["Formula"];
-                     m_dr["WetBase"] = st["WetBase"];
-                     m_dr["DryBasis"] = st["DryBasis"];
-                     m_dr["Yield"] = st["Yield"];
-                     m_dr["ProductMoisture"] = st["ProductMoisture"];
-                     resultTable.Rows.Add(m_dr);
-                     continue;
-                 }
-             }
-             return resultTable;
-         }
-         private static DataTable GetWaterInformation(string OrganizationID)
-         {
-             string connectionString = ConnectionStringFactory.NXJCConnectionString;
-             ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
-             string mySql = @"select distinct A.Name,B.[WarehouseId],B.[WarehousingType],C.[Process],C.DisplayIndex,C.[VariableType],C.[WaterVariable] from [NXJC].[dbo].[inventory_Warehouse] as A ,[NXJC].[dbo].[inventory_WareHousingContrast] as B,[NXJC].[dbo].[report_MaterialBalanceReport] as C
-                  where A.Id=B.warehouseid and A.[OrganizationID]=@OrganizationID and B.[ItemId]=C.[KeyId] and C.WaterVariable is not null order by DisplayIndex,Process ";
-             SqlParameter[] myParameter = { new SqlParameter("@OrganizationID", OrganizationID) };
-             DataTable table = dataFactoryNew.Query(string.Format(mySql), myParameter);
-            
-         
-             return table;
-         }
-         private static Dictionary<string, string> GetWaterData(DataTable waterInformation, string OrganizationID, string startTime, string endTime)
-         {
-             Dictionary<string, string> dlc = new Dictionary<string, string>();
-             string avg = "";
-             string connectionString = ConnectionStringFactory.NXJCConnectionString;
-             ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
-             string mySql = @"select  avg(datavalue) as data from  [NXJC].[dbo].[system_EnergyDataManualInput] where [UpdateCycle]='day' and OrganizationID=@OrganizationID and [VariableId]=@WaterVariable and TimeStamp>=@startTime and TimeStamp<=@endTime";
-             foreach (DataRow sr in waterInformation.Rows)
-             {
-                 string key = sr["Process"].ToString() + sr["Name"] + sr["WarehousingType"];
-                 string WaterVariable = sr["WaterVariable"].ToString();
-                 SqlParameter[] myParameter = { new SqlParameter("@OrganizationID", OrganizationID), new SqlParameter("@WaterVariable", WaterVariable), new SqlParameter("@startTime", startTime), new SqlParameter("@endTime", endTime) };
-                 DataTable table = dataFactoryNew.Query(string.Format(mySql), myParameter);
-                 if (table.Rows[0]["data"].ToString() == "")
-                 {
-                     avg = "0";
-
-                 }
-                 else
-                 {
-                     avg = table.Rows[0]["data"].ToString();
-                 }
-                 dlc.Add(key, avg);
-             }
-             return dlc;
-         }
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         private static string GetDataBaseName(string OrganizationID)//获取组织机构
         {
             string connectionString = ConnectionStringFactory.NXJCConnectionString;
@@ -1407,7 +1056,6 @@ namespace BalanceUI.Service.BalanceService
             return dabaseName;
 
         }
-<<<<<<< HEAD
         #region
         //         private static DataTable GetWaterData(DataTable waterInformation)
         //         {
@@ -1439,39 +1087,6 @@ namespace BalanceUI.Service.BalanceService
         //         }
         #endregion
         //分品种库存入库（调用了徐一帅的算法有多余数据）
-=======
-         #region
-         //         private static DataTable GetWaterData(DataTable waterInformation)
-//         {
-//             int rowsCount = waterInformation.Rows.Count;
-//             StringBuilder sr = new StringBuilder();
-//             for (int i = 0; i < rowsCount; i++)
-//             {
- 
-//             }
-//             string sql = @"";
-//             sr.Append("");
-//             foreach (DataRow dr in waterInformation.Rows)
-//           { 
-
-
-
-//             }
-
-
-
-//             string connectionString = ConnectionStringFactory.NXJCConnectionString;
-//             ISqlServerDataFactory dataFactoryNew = new SqlServerDataFactory(connectionString);
-//             string mySql = @"  select  avg(A.datavalue) as PulverizedCoal_WaterContent,AVG(B.DataValue) As RawCoal_WaterContent
-//    FROM ( select * from [NXJC].[dbo].[system_EnergyDataManualInput] where [UpdateCycle]='day' and OrganizationID='zc_nxjc_byc_byf' and [VariableId]='PulverizedCoal_WaterContent')AS A,
-//  ( select * from [NXJC].[dbo].[system_EnergyDataManualInput] where [UpdateCycle]='day' and OrganizationID='zc_nxjc_byc_byf' and [VariableId]='RawCoal_WaterContent')AS B";
-//             SqlParameter[] myParameter = { new SqlParameter("@OrganizationID", OrganizationID) };
-//             DataTable table = dataFactoryNew.Query(string.Format(mySql), myParameter);
-//             return table;
-         //         }
-#endregion
-         //分品种库存入库（调用了徐一帅的算法有多余数据）
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
         private static DataTable GetMaterialChangeDataTable(string mOrganizationId, string productionLine, string startTime, string endTime)
         {
             string connectionString = ConnectionStringFactory.NXJCConnectionString;

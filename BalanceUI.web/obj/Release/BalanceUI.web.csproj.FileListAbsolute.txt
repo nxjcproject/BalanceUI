@@ -93,7 +93,6 @@ E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\bin\Balance.Model.pdb
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.csprojResolveAssemblyReference.cache
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.dll
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.pdb
-<<<<<<< HEAD
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.web.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.web.pdb
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\BalanceUI.Service.dll
@@ -112,5 +111,26 @@ E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\bin\Balance.Model.pdb
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.csprojResolveAssemblyReference.cache
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.pdb
-=======
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.web.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.web.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\EasyUIJsonParser.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\WebStyleBaseForEnergy.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\WebUserContorls.Web.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\WebUserControls.Infrastructure.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\WebUserControls.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\SqlServerDataAdapter.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.Infrastruture.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\Balance.Infrastructure.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\Balance.Model.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\mDbDataAdaper.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\InternalMemeryRestore.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\AutoMapper.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\EnergyConsumption.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.Service.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\Balance.Infrastructure.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\bin\Balance.Model.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.csprojResolveAssemblyReference.cache
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.web\obj\Release\BalanceUI.web.pdb

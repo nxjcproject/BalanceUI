@@ -56,7 +56,6 @@ E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\bin\Release\Balance.Mode
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.csprojResolveAssemblyReference.cache
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.dll
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.pdb
-<<<<<<< HEAD
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.pdb
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Infrastruture.dll
@@ -68,5 +67,17 @@ E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\bin\Release\Balance.Model.
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.csprojResolveAssemblyReference.cache
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.dll
 E:\物料平衡\马亮给\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.pdb
-=======
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\Balance.Infrastructure.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\Balance.Model.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Infrastruture.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\SqlServerDataAdapter.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\EnergyConsumption.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\AutoMapper.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\Balance.Infrastructure.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Release\Balance.Model.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.csprojResolveAssemblyReference.cache
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.pdb

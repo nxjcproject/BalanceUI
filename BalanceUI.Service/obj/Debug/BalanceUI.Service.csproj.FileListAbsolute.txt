@@ -76,3 +76,17 @@ E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Model.
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.csprojResolveAssemblyReference.cache
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.dll
 E:\物料平衡\20170707新\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\BalanceUI.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\BalanceUI.Service.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Infrastructure.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Model.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\BalanceUI.Infrastruture.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\SqlServerDataAdapter.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\EnergyConsumption.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\AutoMapper.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Infrastructure.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\Debug\Balance.Model.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.csprojResolveAssemblyReference.cache
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Debug\BalanceUI.Service.pdb

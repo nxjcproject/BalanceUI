@@ -20,3 +20,9 @@ H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.I
 H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
 H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.dll
 H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\bin\Debug\BalanceUI.Infrastruture.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\bin\Debug\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.dll
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.pdb
+C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
+C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache

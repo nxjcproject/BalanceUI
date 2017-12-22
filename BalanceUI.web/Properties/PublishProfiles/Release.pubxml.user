@@ -12,23 +12,22 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/AutoMapper.dll">
-<<<<<<< HEAD
       <publishTime>03/28/2015 18:10:20</publishTime>
     </File>
     <File Include="bin/Balance.Infrastructure.dll">
-      <publishTime>08/14/2017 15:39:02</publishTime>
+      <publishTime>11/29/2017 10:43:56</publishTime>
     </File>
     <File Include="bin/Balance.Model.dll">
-      <publishTime>08/14/2017 15:39:02</publishTime>
+      <publishTime>11/29/2017 10:43:56</publishTime>
     </File>
     <File Include="bin/BalanceUI.Infrastruture.dll">
-      <publishTime>08/14/2017 16:44:36</publishTime>
+      <publishTime>12/13/2017 18:20:25</publishTime>
     </File>
     <File Include="bin/BalanceUI.Service.dll">
-      <publishTime>12/02/2017 11:21:20</publishTime>
+      <publishTime>12/13/2017 18:20:25</publishTime>
     </File>
     <File Include="bin/BalanceUI.web.dll">
-      <publishTime>12/02/2017 11:21:20</publishTime>
+      <publishTime>12/13/2017 18:20:26</publishTime>
     </File>
     <File Include="bin/EasyUIJsonParser.dll">
       <publishTime>09/12/2015 14:36:52</publishTime>
@@ -56,51 +55,6 @@
     </File>
     <File Include="bin/WebUserControls.Service.dll">
       <publishTime>10/11/2015 21:53:56</publishTime>
-=======
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/Balance.Infrastructure.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/Balance.Model.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/BalanceUI.Infrastruture.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/BalanceUI.Service.dll">
-      <publishTime>07/18/2017 13:12:21</publishTime>
-    </File>
-    <File Include="bin/BalanceUI.web.dll">
-      <publishTime>07/18/2017 13:12:22</publishTime>
-    </File>
-    <File Include="bin/EasyUIJsonParser.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/EnergyConsumption.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/InternalMemeryRestore.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/mDbDataAdaper.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/SqlServerDataAdapter.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/WebStyleBaseForEnergy.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/WebUserContorls.Web.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/WebUserControls.Infrastructure.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
-    </File>
-    <File Include="bin/WebUserControls.Service.dll">
-      <publishTime>06/05/2017 14:32:54</publishTime>
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     </File>
     <File Include="css/common/charts.css">
       <publishTime>06/05/2017 14:32:54</publishTime>
@@ -4666,31 +4620,19 @@
       <publishTime>06/05/2017 14:32:54</publishTime>
     </File>
     <File Include="UI_Balance/BasicDataCorrection.aspx">
-<<<<<<< HEAD
       <publishTime>08/14/2017 18:11:42</publishTime>
-=======
-      <publishTime>07/07/2017 16:55:16</publishTime>
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     </File>
     <File Include="UI_Balance/js/common/MergeCell.js">
       <publishTime>06/30/2016 10:48:34</publishTime>
     </File>
     <File Include="UI_Balance/js/page/BalanceMachineHalt.js">
-<<<<<<< HEAD
       <publishTime>07/07/2017 16:43:52</publishTime>
-=======
-      <publishTime>07/07/2017 16:43:51</publishTime>
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     </File>
     <File Include="UI_Balance/js/page/BalanceWeightBalanceLog.js">
       <publishTime>06/05/2017 14:32:54</publishTime>
     </File>
     <File Include="UI_Balance/js/page/BasicDataCorrection.js">
-<<<<<<< HEAD
       <publishTime>08/14/2017 18:11:42</publishTime>
-=======
-      <publishTime>07/07/2017 17:05:06</publishTime>
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
     </File>
     <File Include="UI_Balance/js/page/MaterialBalance.js">
       <publishTime>06/23/2017 15:54:34</publishTime>
@@ -4702,11 +4644,7 @@
       <publishTime>06/20/2017 11:26:48</publishTime>
     </File>
     <File Include="Web.config">
-<<<<<<< HEAD
-      <publishTime>12/02/2017 11:21:22</publishTime>
-=======
-      <publishTime>07/18/2017 13:12:26</publishTime>
->>>>>>> 2856e1c547f65348950fe227c9a829f8bf44b569
+      <publishTime>12/13/2017 18:20:31</publishTime>
     </File>
   </ItemGroup>
 </Project>
