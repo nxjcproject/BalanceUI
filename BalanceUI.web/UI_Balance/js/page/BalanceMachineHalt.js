@@ -135,7 +135,7 @@ function InitializeMasterMachineHaltGrid(myData, myObjId) {
             field: 'EquipmentId',
             hidden: true
         }, {
-            width: '100',
+            width: '120',
             title: '设备名称',
             field: 'EquipmentName'
         }, {
@@ -148,7 +148,7 @@ function InitializeMasterMachineHaltGrid(myData, myObjId) {
             title: '运行班组',
             field: 'WorkingTeam'
         }, {
-            width: '100',
+            width: '120',
             title: 'DCS标签',
             field: 'Label'
         }, {

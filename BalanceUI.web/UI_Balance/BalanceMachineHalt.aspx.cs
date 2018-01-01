@@ -20,7 +20,7 @@ namespace BalanceUI.web.UI_Balance
                 // 调试用,自定义的数据授权
                 List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf", "zc_nxjc_qtx_tys" };
                 AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
-                mPageOpPermission = "0000";
+                mPageOpPermission = "1111";
 #endif
                 this.OrganisationTree.Organizations = GetDataValidIdGroup("ProductionOrganization");                 //向web用户控件传递数据授权参数
                 this.OrganisationTree.PageName = "BalanceMachineHalt.aspx";
