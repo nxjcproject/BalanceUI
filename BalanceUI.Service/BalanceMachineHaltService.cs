@@ -91,9 +91,10 @@ namespace BalanceUI.Service
         }
         public static DataTable GetMasterMachineInfo(string myOrganizationId)
         {
+            //,B.Name + A.VariableDescription as Text
             string m_Sql = @"SELECT A.ID as Id
                                 ,A.OrganizationID as OrganizationId
-                                ,B.Name + A.VariableDescription as Text
+                                ,A.VariableDescription as Text
                             FROM system_MasterMachineDescription A, system_Organization B, system_Organization C
                             where C.OrganizationID = '{0}'
                             and B.LevelCode like C.LevelCode + '%'

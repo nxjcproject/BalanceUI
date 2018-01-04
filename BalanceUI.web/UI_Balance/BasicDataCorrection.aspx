@@ -71,17 +71,17 @@
                         <div data-options="region:'north',border:true,collapsible:false" style="height: 34px; background-color: #eeeeee; padding-top: 2px;">
                             <table>
                                 <tr>
-                                    <td style="width: 50px; text-align: right;">组合机构</td>
-                                    <td>
-                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 100px" />
+                                    <td style="width: 60px; text-align: right;">当前分厂</td>
+                                    <td style="width: 80px;">
+                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 75px" />
                                     </td>
                                     <td style="width: 60px; text-align: right;">开始时间</td>
-                                    <td>
-                                        <input id="datetimebox_TrendStartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 150px" />
+                                    <td style="width: 150px;">
+                                        <input id="datetimebox_TrendStartTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                     </td>
                                     <td style="width: 60px; text-align: right;">结束时间</td>
-                                    <td>
-                                        <input id="datetimebox_TrendEndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 150px" />
+                                    <td style="width: 150px;">
+                                        <input id="datetimebox_TrendEndTimeF" class="easyui-datetimebox" data-options="validType:'md[\'2014-07-28 10:10:10\']',editable:false" value="2014-07-28 12:13:56" style="width: 145px" />
                                     </td>
                                     <td>
                                         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="EditTrendTags();">趋势标签</a>

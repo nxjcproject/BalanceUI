@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>停机记录调整</title>
+    <title>停机平衡</title>
 
     <link rel="stylesheet" type="text/css" href="/lib/ealib/themes/gray/easyui.css" />
     <link rel="stylesheet" type="text/css" href="/lib/ealib/themes/icon.css" />
@@ -85,7 +85,7 @@
                     </td>
                     <th style ="width:100px;">组织机构</th>
                     <td style="width: 160px">
-                        <input id="TextBox_OrganizationName" class="easyui-textbox" data-options="required:true,readonly:true" style="width: 140px" />
+                        <input id="Text1" class="easyui-textbox" data-options="required:true,readonly:true" style="width: 140px" />
                     </td>
                 </tr>
                 <tr>

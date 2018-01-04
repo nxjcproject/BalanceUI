@@ -24,10 +24,10 @@
       <publishTime>12/13/2017 18:20:25</publishTime>
     </File>
     <File Include="bin/BalanceUI.Service.dll">
-      <publishTime>12/13/2017 18:20:25</publishTime>
+      <publishTime>01/04/2018 16:49:28</publishTime>
     </File>
     <File Include="bin/BalanceUI.web.dll">
-      <publishTime>12/13/2017 18:20:26</publishTime>
+      <publishTime>01/04/2018 16:49:28</publishTime>
     </File>
     <File Include="bin/EasyUIJsonParser.dll">
       <publishTime>09/12/2015 14:36:52</publishTime>
@@ -4644,7 +4644,7 @@
       <publishTime>06/20/2017 11:26:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/13/2017 18:20:31</publishTime>
+      <publishTime>01/04/2018 16:49:39</publishTime>
     </File>
   </ItemGroup>
 </Project>
