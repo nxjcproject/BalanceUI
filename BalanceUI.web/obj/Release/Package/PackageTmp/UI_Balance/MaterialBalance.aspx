@@ -23,20 +23,20 @@
          <div data-options="region:'west'" style="width: 150px;">
             <uc1:OrganisationTree ID="OrganisationTree" runat="server" />
         </div>
-          <div id="toorBar" title="" style="height:40px;padding:10px;">
+          <div id="toorBar" title="" style="height:30px;padding:5px;">
             <div>
                 <table>
                     <tr>
-                        <td>分厂名称:</td>
+                        <td style="width: 50px; text-align: right;">组织机构</td>
                         <td >                               
                             <input id="organizationName" class="easyui-textbox" readonly="readonly"style="width:100px" />  
                             <input id="organizationId" readonly="readonly" style="display: none;" />             
                         </td>
-                        <td>开始时间：</td>
+                        <td style="width: 55px; text-align: right;">开始时间</td>
                         <td>
                              <input id="startTime" type="text" class="easyui-datetimebox" style="width:150px;" required="required"/>
                         </td>
-                        <td>结束时间：</td>
+                        <td style="width: 55px; text-align: right;">结束时间</td>
                          <td>
                              <input id="endTime" type="text" class="easyui-datetimebox" style="width:150px;" required="required"/>
                         </td>

@@ -117,9 +117,13 @@ namespace BalanceUI.Service
         /// <returns></returns>
         public static DataTable GetMachineHaltReasons()
         {
-            Query query = new Query("system_MachineHaltReason");
-            query.AddOrderByClause(new SqlServerDataAdapter.Infrastruction.OrderByClause("MachineHaltReasonID", false));
-            return _dataFactory.Query(query);
+            string connectionString = ConnectionStringFactory.NXJCConnectionString;
+            ISqlServerDataFactory factory = new SqlServerDataFactory(connectionString);
+            string mySql = @"SELECT  RTRIM(LTRIM(LevelCode)) AS LevelCode, ReasonText, RTRIM(LTRIM(MachineHaltReasonID)) AS MachineHaltReasonID
+                                FROM system_MachineHaltReason
+                                WHERE Enabled=1
+                                order by LevelCode";
+            return factory.Query(mySql);
         }
         public static DataTable GetMachineHaltLogbyDate(string myDate, string myOrganizationId)
         {

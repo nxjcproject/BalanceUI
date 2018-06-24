@@ -21,13 +21,13 @@
       <publishTime>11/29/2017 10:43:56</publishTime>
     </File>
     <File Include="bin/BalanceUI.Infrastruture.dll">
-      <publishTime>12/13/2017 18:20:25</publishTime>
+      <publishTime>06/21/2018 21:33:32</publishTime>
     </File>
     <File Include="bin/BalanceUI.Service.dll">
-      <publishTime>01/04/2018 16:49:28</publishTime>
+      <publishTime>06/22/2018 15:40:56</publishTime>
     </File>
     <File Include="bin/BalanceUI.web.dll">
-      <publishTime>01/04/2018 16:49:28</publishTime>
+      <publishTime>06/22/2018 15:40:56</publishTime>
     </File>
     <File Include="bin/EasyUIJsonParser.dll">
       <publishTime>09/12/2015 14:36:52</publishTime>
@@ -4614,10 +4614,10 @@
       <publishTime>06/05/2017 14:32:58</publishTime>
     </File>
     <File Include="UI_Balance/BalanceMachineHalt.aspx">
-      <publishTime>06/05/2017 14:32:54</publishTime>
+      <publishTime>06/21/2018 20:13:48</publishTime>
     </File>
     <File Include="UI_Balance/BalanceWeightBalanceLog.aspx">
-      <publishTime>06/05/2017 14:32:54</publishTime>
+      <publishTime>01/04/2018 18:29:56</publishTime>
     </File>
     <File Include="UI_Balance/BasicDataCorrection.aspx">
       <publishTime>08/14/2017 18:11:42</publishTime>
@@ -4626,7 +4626,7 @@
       <publishTime>06/30/2016 10:48:34</publishTime>
     </File>
     <File Include="UI_Balance/js/page/BalanceMachineHalt.js">
-      <publishTime>07/07/2017 16:43:52</publishTime>
+      <publishTime>06/22/2018 15:26:30</publishTime>
     </File>
     <File Include="UI_Balance/js/page/BalanceWeightBalanceLog.js">
       <publishTime>06/05/2017 14:32:54</publishTime>
@@ -4638,13 +4638,13 @@
       <publishTime>06/23/2017 15:54:34</publishTime>
     </File>
     <File Include="UI_Balance/MaterialBalance.aspx">
-      <publishTime>06/20/2017 11:17:10</publishTime>
+      <publishTime>01/04/2018 18:29:56</publishTime>
     </File>
     <File Include="UI_Balance/MaterialBalanceReport.aspx">
       <publishTime>06/20/2017 11:26:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/04/2018 16:49:39</publishTime>
+      <publishTime>06/22/2018 15:41:01</publishTime>
     </File>
   </ItemGroup>
 </Project>

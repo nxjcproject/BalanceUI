@@ -8,3 +8,8 @@ H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.I
 H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.dll
 H:\徐一帅项目\第一轮修改\BalanceUI-master\BalanceUI-master\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.pdb
 C:\工作\编程\恒拓软件\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\bin\Release\BalanceUI.Infrastruture.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\bin\Release\BalanceUI.Infrastruture.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Release\BalanceUI.Infrastruture.pdb

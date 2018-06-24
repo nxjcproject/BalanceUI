@@ -18,9 +18,9 @@ namespace BalanceUI.web.UI_Balance
             {
 #if DEBUG
                 // 调试用,自定义的数据授权
-                List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf", "zc_nxjc_qtx_tys" };
+                List<string> m_DataValidIdItems = new List<string>() { "zc_nxjc_byc_byf", "zc_nxjc_qtx_tys", "zc_nxjc_qtx_efc" };
                 AddDataValidIdGroup("ProductionOrganization", m_DataValidIdItems);
-                mPageOpPermission = "0000";
+                mPageOpPermission = "1111";
 #endif
                 this.OrganisationTree.Organizations = GetDataValidIdGroup("ProductionOrganization");                 //向web用户控件传递数据授权参数
                 this.OrganisationTree.PageName = "BalanceMachineHalt.aspx";
@@ -54,23 +54,7 @@ namespace BalanceUI.web.UI_Balance
         public static string GetMachineHaltReasonsWithTreeGridFormat()
         {
             DataTable dt = BalanceMachineHaltService.GetMachineHaltReasons();
-            DataColumn parentIdColumn = new DataColumn("ParentID");
-            dt.Columns.Add(parentIdColumn);
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string levelcode = row["MachineHaltReasonID"].ToString().Trim();
-                row["MachineHaltReasonID"] = row["MachineHaltReasonID"].ToString().Trim();
-                if (levelcode.Length > 3)
-                {
-                    row["ParentID"] = levelcode.Substring(0, levelcode.Length - 2);
-                }
-                else
-                {
-                    row["ParentID"] = 0;
-                }
-            }
-            string m_ValueString = EasyUIJsonParser.TreeJsonParser.DataTableToJson(dt, "MachineHaltReasonID", "ReasonText", "ParentID", "0");
+            string m_ValueString = EasyUIJsonParser.TreeJsonParser.DataTableToJsonByLevelCode(dt, "LevelCode", "ReasonText", "MachineHaltReasonID");
             return m_ValueString;
         }
         [WebMethod]

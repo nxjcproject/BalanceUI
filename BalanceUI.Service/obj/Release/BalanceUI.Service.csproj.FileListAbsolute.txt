@@ -81,3 +81,14 @@ C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\bin\R
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.csprojResolveAssemblyReference.cache
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.dll
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Service.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Infrastruture.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\EnergyConsumption.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\AutoMapper.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\BalanceUI.Infrastruture.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\Balance.Infrastructure.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\bin\Release\Balance.Model.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Service\obj\Release\BalanceUI.Service.pdb

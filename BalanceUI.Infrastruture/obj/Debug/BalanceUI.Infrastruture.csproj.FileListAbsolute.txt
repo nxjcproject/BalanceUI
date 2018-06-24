@@ -25,3 +25,8 @@ C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.dll
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.pdb
 C:\工作\编程\宁夏建材\三层框架V3.1\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\bin\Debug\BalanceUI.Infrastruture.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\bin\Debug\BalanceUI.Infrastruture.pdb
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.dll
+C:\Users\Administrator\Desktop\BalanceUI\BalanceUI.Infrastruture\obj\Debug\BalanceUI.Infrastruture.pdb

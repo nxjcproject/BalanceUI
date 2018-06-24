@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>停机平衡</title>
+    <title>停机记录调整</title>
 
     <link rel="stylesheet" type="text/css" href="/lib/ealib/themes/gray/easyui.css" />
     <link rel="stylesheet" type="text/css" href="/lib/ealib/themes/icon.css" />
@@ -35,31 +35,36 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td>当前分厂：</td>
+                                    <td style="width: 50px; text-align: right;">组织机构</td>
                                     <td>
-                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 100px" /></td>
-                                    <td>|</td>
-                                    <td>时间：</td>
+                                        <input id="Textbox_OrganizationName" class="easyui-textbox" readonly="readonly" style="width: 100px" />
+                                    </td>                                    
+                                    <td style="width: 52px; text-align: right;">选择设备</td>
                                     <td>
-                                        <input id="Datebox_StartTimeF" class="easyui-datebox" style="width: 100px" /></td>
-                                    <td>--</td>
-                                    <td>
-                                        <input id="Datebox_EndTimeF" class="easyui-datebox" style="width: 100px" /></td>
-                                    <td>|</td>
-                                    <td>选择设备：</td>
-                                    <td>
-                                        <select id="Combobox_MainMachineF" class="easyui-combobox" name="MainMachine" data-options="panelHeight:'auto', valueField: 'Id',textField: 'Text',editable:false" style="width: 160px;">
+                                        <select id="Combobox_MainMachineF" class="easyui-combobox" name="MainMachine" data-options="panelHeight:'auto', valueField: 'Id',textField: 'Text',editable:false" style="width: 180px;">
                                         </select>
                                     </td>
                                     <td><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="QueryMachineHaltInfo()">查询</a></td>
                                 </tr>
-
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick ="AddMachineHaltInfo()">新建</a>
+                            <table>
+                                <tr>
+                                    <td style="width: 155px; text-align: right;">开始时间
+                                        <input id="Datebox_StartTimeF" class="easyui-datebox" style="width: 100px" />
+                                    </td>
+                                    <td style="width: 155px; text-align: right;">结束时间
+                                        <input id="Datebox_EndTimeF" class="easyui-datebox" style="width: 100px" />
+                                    </td>
+                                    <td style="width:76px;"></td>                                  
+                                    <td>
+                                        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick ="AddMachineHaltInfo()">新建</a>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
@@ -80,7 +85,7 @@
                     </td>
                     <th style ="width:100px;">组织机构</th>
                     <td style="width: 160px">
-                        <input id="TextBox_OrganizationName" class="easyui-textbox" data-options="required:true,readonly:true" style="width: 140px" />
+                        <input id="Text1" class="easyui-textbox" data-options="required:true,readonly:true" style="width: 140px" />
                     </td>
                 </tr>
                 <tr>

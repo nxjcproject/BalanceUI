@@ -77,11 +77,14 @@ function loadMachineHaltReasons() {
                 $('#ComboTree_HaltReason').combotree({
                     data: m_MsgData,
                     dataType: "json",
-                    valueField: 'id',
+                    valueField: 'MachineHaltReasonID',
                     textField: 'text',
                     required: false,
-                    panelHeight: 350,
+                    panelHeight: 300,
                     editable: false,
+                    onLoadSuccess: function (row, data) {
+                        $(this).tree("collapseAll");//树节点全部闭合
+                    },
                     onSelect: function (node) {
                         //返回树对象  
                         var tree = $(this).tree;
@@ -94,7 +97,6 @@ function loadMachineHaltReasons() {
                         }
                     }
                 });
-                $('#ComboTree_HaltReason').combotree('tree').tree("collapseAll");
             }
             $.messager.progress('close');
         },
